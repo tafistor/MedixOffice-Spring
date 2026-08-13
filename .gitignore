@@ -1,0 +1,42 @@
+# ==== Environment / secrets ====
+.env
+backend/.env
+backend-spring/.env
+
+# ==== Node (frontend + old Node backend) ====
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==== Java / Maven (Spring Boot backend) ====
+target/
+*.class
+*.jar
+*.war
+
+# ==== Logs ====
+logs
+*.log
+
+# ==== IDE ====
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==== OS ====
+.DS_Store
+Thumbs.db
+
+# ==== Uploaded patient files (runtime data, not source — also GDPR-sensitive) ====
+backend/medicalFiles/
