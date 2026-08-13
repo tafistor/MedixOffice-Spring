@@ -1,0 +1,346 @@
+.doctors-container {
+    padding: 24px;
+  }
+  
+  .doctors-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .header-content-doctor {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .header-text-doctor h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  
+  .header-text-doctor p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .add-doctor-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 24px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .add-doctor-btn:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .add-doctor-btn .icon-doctor {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    color: white;
+  }
+  
+  .search-container {
+    margin-bottom: 24px;
+    background-color: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .search-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: #94a3b8;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 12px 12px 12px 44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1e293b;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+  
+  .search-input::placeholder {
+    color: #94a3b8;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  
+  .doctor-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s, transform 0.2s ease-in-out;
+    min-height: 280px;
+    padding: 16px;
+    width: 300px;
+  }
+  
+  .doctor-info {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .doctor-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .icon-wrapper {
+    background-color: #eff6ff;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .doctor-icon {
+    width: 24px;
+    height: 24px;
+    color: #2563eb;
+  }
+  
+  .doctor-title h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  
+  .doctor-title p {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    transition: color 0.2s;
+  }
+  
+  .contact-item:hover {
+    color: #1a1a1a;
+  }
+  
+  .contact-item .icon-doctor {
+    width: 20px;
+    height: 20px;
+    color: #666;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 16px;
+    margin-top: auto;
+  }
+  
+  .edit-btn, .view-details-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .edit-btn {
+    background-color: #f3f4f6;
+    color: #4b5563;
+  }
+  
+  .edit-btn:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+  }
+  
+  .view-details-btn {
+    background-color: #2563eb;
+    color: white;
+  }
+  
+  .view-details-btn:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .button-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Dialog styles */
+  .dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .dialog-content {
+    background-color: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .dialog-actions button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .dialog-actions button[type="button"] {
+    background-color: #f3f4f6;
+    color: #1a1a1a;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .dialog-actions button[type="submit"] {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+  }
+  
+  @media (max-width: 768px) {
+    .doctors-container {
+      padding: 16px;
+    }
+  
+    .doctors-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .doctors-header {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+  
+    .search-container {
+      padding: 12px;
+    }
+  
+    .search-input {
+      font-size: 16px;
+      padding: 10px 10px 10px 40px;
+    }
+  
+    .add-doctor-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .action-buttons {
+      flex-direction: column;
+    }
+  
+    .action-buttons button {
+      width: 100%;
+    }
+  
+    .dialog-content {
+      margin: 16px;
+      max-height: calc(100vh - 32px);
+    }
+  }

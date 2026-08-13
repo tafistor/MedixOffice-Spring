@@ -1,0 +1,292 @@
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .dialog-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .view-patient-dialog {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .dialog-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
+  
+  .close-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+  }
+  
+  .close-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .dialog-body {
+    padding: 24px;
+    flex: 1;
+  }
+  
+  .patient-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .patient-avatar-large {
+    width: 64px;
+    height: 64px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 16px;
+  }
+  
+  .patient-profile-name h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .patient-profile-id {
+    color: var(--text-light);
+    font-size: 14px;
+    margin: 4px 0 0 0;
+  }
+  
+  .info-section {
+    margin-bottom: 24px;
+  }
+  
+  .info-section h4 {
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: var(--text-color);
+    position: relative;
+    display: inline-block;
+  }
+  
+  .info-section h4:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-light);
+    border-radius: 1px;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .info-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .info-icon {
+    margin-right: 12px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: rgba(66, 153, 225, 0.15);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .info-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+  
+  .info-value {
+    font-weight: 500;
+    word-break: break-word;
+  }
+  
+  .dialog-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .appointments-list {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .appointment-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .appointment-item:last-child {
+    border-bottom: none;
+  }
+  
+  .appointment-icon {
+    color: var(--primary-color);
+    margin-right: 12px;
+  }
+  
+  .appointment-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .appointment-time {
+    font-weight: 500;
+    color: var(--text-color);
+  }
+  
+  .appointment-doctor {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+  
+  .appointment-status {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: capitalize;
+  }
+  
+  .status-pending {
+    background-color: #fed7aa;
+    color: #9a3412;
+  }
+  
+  .status-confirmed {
+    background-color: #bbf7d0;
+    color: #166534;
+  }
+  
+  .status-cancelled {
+    background-color: #fecaca;
+    color: #991b1b;
+  }
+  
+  .status-completed {
+    background-color: #ddd6fe;
+    color: #5b21b6;
+  }
+  
+  .no-appointments {
+    color: var(--text-light);
+    text-align: center;
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 640px) {
+    .dialog-content {
+      width: 95%;
+      max-height: 85vh;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .patient-profile-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .patient-avatar-large {
+      margin-right: 0;
+      margin-bottom: 12px;
+    }
+  }

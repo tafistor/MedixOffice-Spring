@@ -1,0 +1,276 @@
+.medical-records-container {
+    padding: 24px;
+  }
+  
+  .records-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;  }
+  
+  .header-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  
+  .header-description {
+    font-size: 14px;
+    color: #666;
+  }
+  .records-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .add-records {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .add-records .iconss {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    color: white;
+  }
+  
+  .add-records:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .search-bar {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+  }
+  
+  .search-input-wrapper {
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .records-grid {
+    display: grid;
+    gap: 24px;
+  }
+  
+  .record-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+  }
+  
+  .record-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .record-header {
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .patient-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .patient-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .patient-details h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .patient-details p {
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  .record-status {
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .status-complete {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+  
+  .record-body {
+    padding: 16px;
+  }
+  
+  .record-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .info-icon {
+    color: #6b7280;
+  }
+  
+  .info-text {
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  .record-section {
+    margin-bottom: 16px;
+  }
+  
+  .section-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+  }
+  
+  .section-content {
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+  
+  .vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  
+  .vital-item {
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .vital-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+  
+  .vital-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111827;
+  }
+  
+  .record-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  
+  .action-button {
+    flex: 1;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .primary-button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+  }
+  
+  .primary-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .secondary-button {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .secondary-button:hover {
+    background-color: #e5e7eb;
+  }
+  
+  @media (max-width: 768px) {
+    .record-info {
+      grid-template-columns: 1fr;
+    }
+    
+    .vitals-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .record-actions {
+      flex-direction: column;
+    }
+  }

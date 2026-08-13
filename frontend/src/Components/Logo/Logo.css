@@ -1,0 +1,22 @@
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .logo-icon {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    color: #2563eb;
+  }
+  
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2563eb;
+  }
