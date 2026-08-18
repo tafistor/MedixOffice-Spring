@@ -50,8 +50,8 @@
 
         <!-- MySQL-protocol database driver. The live server is actually MariaDB
              10.4.28 (verified via SELECT VERSION()), not MySQL proper, so we use
-             the MariaDB Connector/J + MariaDBDialect for correctness even though
-             the brief calls it "MySQL" -- see migration notes. -->
+             the MariaDB Connector/J and MariaDBDialect for correctness, even
+             though the brief calls it "MySQL". -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
