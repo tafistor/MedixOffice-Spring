@@ -60,6 +60,11 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
+    private LocalDateTime deletedAt;
+
     protected User() {
     }
 
@@ -153,5 +158,23 @@ public class User {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void softDelete() {
+        this.isActive = false;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void restore() {
+        this.isActive = true;
+        this.deletedAt = null;
     }
 }
