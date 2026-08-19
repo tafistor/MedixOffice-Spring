@@ -1,5 +1,6 @@
 package com.medixoffice.backend.security;
 
+import com.medixoffice.backend.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -17,11 +18,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Authenticates from the JWT's own claims (id, role) only. Node's protect
- * middleware also re-fetches the user from the DB on every request so a
+ * Re-fetches the user on every request (like Node's protect middleware) so a
  * deleted/deactivated account is rejected immediately rather than waiting out
- * the token's 30-day expiry - this filter will gain that same check once the
- * User entity and repository exist (Phase 1).
+ * the token's 30-day expiry, instead of trusting the JWT's claims blindly.
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -29,9 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTH_ERROR_ATTRIBUTE = "authErrorMessage";
 
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -44,11 +45,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 var claims = jwtService.parseClaims(token);
                 Integer userId = claims.get("id", Integer.class);
-                String role = claims.get("role", String.class);
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        userId, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                var user = userRepository.findById(userId).orElse(null);
+                if (user == null || !user.isActive()) {
+                    request.setAttribute(AUTH_ERROR_ATTRIBUTE, "User not found");
+                } else {
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(
+                            userId, null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             } catch (ExpiredJwtException e) {
                 request.setAttribute(AUTH_ERROR_ATTRIBUTE, "Token expired");
             } catch (JwtException e) {
