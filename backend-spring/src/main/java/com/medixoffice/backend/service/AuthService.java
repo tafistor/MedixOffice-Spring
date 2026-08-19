@@ -4,6 +4,7 @@ import com.medixoffice.backend.dto.auth.AuthResponse;
 import com.medixoffice.backend.dto.auth.LoginRequest;
 import com.medixoffice.backend.dto.auth.RegisterRequest;
 import com.medixoffice.backend.entity.User;
+import com.medixoffice.backend.exception.AccountDeactivatedException;
 import com.medixoffice.backend.exception.DuplicateEmailException;
 import com.medixoffice.backend.exception.InvalidCredentialsException;
 import com.medixoffice.backend.exception.ResourceNotFoundException;
@@ -43,6 +44,13 @@ public class AuthService {
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new InvalidCredentialsException("Invalid password");
+        }
+
+        // Checked after the password, not before: a wrong-password attempt against a
+        // deactivated account should still just get "invalid password", not a hint
+        // that the account exists and is deactivated.
+        if (!user.isActive()) {
+            throw new AccountDeactivatedException("This account has been deactivated");
         }
 
         return toAuthResponse(user);
