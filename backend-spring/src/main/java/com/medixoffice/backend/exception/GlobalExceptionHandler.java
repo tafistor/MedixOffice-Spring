@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,9 +14,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Authentication/authorization failures (401/403) are handled separately by
- * JwtAuthenticationEntryPoint/JwtAccessDeniedHandler in the security filter
- * chain - exceptions thrown there never reach a @RestControllerAdvice.
+ * 401s (no/invalid/expired token) are always handled by
+ * JwtAuthenticationEntryPoint in the security filter chain - that check runs
+ * before DispatcherServlet, so those exceptions never reach here. 403s are
+ * split: a URL-pattern-level authorizeHttpRequests denial is also filter-chain
+ * territory (JwtAccessDeniedHandler), but a @PreAuthorize denial happens
+ * *inside* DispatcherServlet's handling of the request, where this
+ * @RestControllerAdvice's catch-all intercepts it first - hence the explicit
+ * AuthorizationDeniedException handler below, kept in sync with
+ * JwtAccessDeniedHandler's message.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,6 +45,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED.value()));
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAuthorizationDenied(AuthorizationDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse("Not authorized to access this resource", HttpStatus.FORBIDDEN.value()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
