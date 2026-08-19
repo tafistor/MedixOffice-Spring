@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 /** No timestamps - the live patients table has neither createdAt/updatedAt nor any snake_case equivalent. */
@@ -45,6 +46,11 @@ public class Patient {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String address;
+
+    @Column(nullable = false)
+    private boolean isActive = true;
+
+    private LocalDateTime deletedAt;
 
     protected Patient() {
     }
@@ -129,5 +135,23 @@ public class Patient {
             return null;
         }
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void softDelete() {
+        this.isActive = false;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void restore() {
+        this.isActive = true;
+        this.deletedAt = null;
     }
 }
