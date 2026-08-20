@@ -47,6 +47,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED.value()));
     }
 
+    @ExceptionHandler(SlotUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleSlotUnavailable(SlotUnavailableException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
+    }
+
     @ExceptionHandler(AccountDeactivatedException.class)
     public ResponseEntity<ErrorResponse> handleAccountDeactivated(AccountDeactivatedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
