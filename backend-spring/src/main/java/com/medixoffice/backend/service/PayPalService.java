@@ -74,6 +74,35 @@ public class PayPalService {
         }
     }
 
+    /**
+     * intent: CAPTURE on order creation does NOT auto-capture funds - PayPal's
+     * approval redirect only means the buyer approved, not that money moved.
+     * Node's services/paypal.js never called this at all; the invoice was
+     * marked "paid" purely because the frontend trusted the return URL's
+     * payment_success param, which is both why it silently never really
+     * confirmed payment and why anyone could forge that URL to mark any
+     * invoice paid without ever paying. This call is the real verification.
+     */
+    public boolean capturePayment(String orderId) {
+        String accessToken = fetchAccessToken();
+
+        try {
+            PayPalCaptureResponse response = restClient.post()
+                    .uri(baseUrl + "/v2/checkout/orders/" + orderId + "/capture")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .body(PayPalCaptureResponse.class);
+
+            return response != null && "COMPLETED".equals(response.status());
+        } catch (Exception e) {
+            throw new PaymentException("PayPal capture failed", e);
+        }
+    }
+
+    private record PayPalCaptureResponse(String id, String status) {
+    }
+
     private String fetchAccessToken() {
         String credentials = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
 
