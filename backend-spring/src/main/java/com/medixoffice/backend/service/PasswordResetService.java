@@ -50,7 +50,14 @@ public class PasswordResetService {
         return new RequestResetCodeResponse("Reset code sent by email", (int) CODE_TTL.getSeconds());
     }
 
-    @Transactional
+    /**
+     * noRollbackFor is required here: every failure path below intentionally
+     * mutates user state (attempt count, block time, or clearing expired
+     * reset fields) that must persist even though the method then throws -
+     * without it, Spring's default rollback-on-RuntimeException would undo
+     * those changes along with everything else in the transaction.
+     */
+    @Transactional(noRollbackFor = {VerifyCodeFailedException.class, ResetCodeExpiredException.class})
     public VerifyResetCodeResponse verifyResetCode(String email, String code) {
         User user = userRepository.findByEmail(email)
                 .filter(u -> u.getResetCode() != null)
@@ -85,7 +92,7 @@ public class PasswordResetService {
         return new VerifyResetCodeResponse("Code verified successfully", true);
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = ResetCodeExpiredException.class)
     public void resetPassword(String email, String code, String newPassword) {
         User user = userRepository.findByEmail(email)
                 .filter(u -> u.getResetCode() != null && u.getResetCode().equalsIgnoreCase(code))
