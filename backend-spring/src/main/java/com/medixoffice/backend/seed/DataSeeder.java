@@ -106,14 +106,19 @@ public class DataSeeder implements CommandLineRunner {
         User admin = saveUser("Ada", "Min", "admin@medixoffice.demo", Role.admin);
 
         User secretaryUser = saveUser("Sophie", "Secretaire", "secretary@medixoffice.demo", Role.secretary);
-        secretarySpecialtyRepository.save(new SecretarySpecialty(secretaryUser, "Cardiologie"));
-        secretarySpecialtyRepository.save(new SecretarySpecialty(secretaryUser, "Médecine générale"));
+        // Must match frontend/src/data/specializationsList.js exactly - it's the
+        // canonical list AddEditDoctor.jsx uses, and visitTypesWithAmounts.js keys
+        // off these same English names to look up predefined visit types per
+        // specialty. French labels here silently produced zero predefined visit
+        // types for every seeded doctor (dropdown fell back to "Other" only).
+        secretarySpecialtyRepository.save(new SecretarySpecialty(secretaryUser, "Cardiology"));
+        secretarySpecialtyRepository.save(new SecretarySpecialty(secretaryUser, "General Medicine"));
 
         User doctor1User = saveUser("Marc", "Cardio", "doctor1@medixoffice.demo", Role.doctor);
-        Doctor doctor1 = doctorRepository.save(new Doctor(doctor1User, "Cardiologie", "DOC-001", "+32470000001", doctor1User.getEmail()));
+        Doctor doctor1 = doctorRepository.save(new Doctor(doctor1User, "Cardiology", "DOC-001", "+32470000001", doctor1User.getEmail()));
 
         User doctor2User = saveUser("Julie", "Pediatre", "doctor2@medixoffice.demo", Role.doctor);
-        Doctor doctor2 = doctorRepository.save(new Doctor(doctor2User, "Pédiatrie", "DOC-002", "+32470000002", doctor2User.getEmail()));
+        Doctor doctor2 = doctorRepository.save(new Doctor(doctor2User, "Pediatrics", "DOC-002", "+32470000002", doctor2User.getEmail()));
 
         User patient1User = saveUser("Jean", "Dupont", "patient1@medixoffice.demo", Role.patient);
         Patient patient1 = new Patient(patient1User, "+32470000011", patient1User.getEmail(), "1 rue de la Paix, Bruxelles");
