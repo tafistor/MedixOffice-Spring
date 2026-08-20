@@ -40,3 +40,4 @@ Thumbs.db
 
 # ==== Uploaded patient files (runtime data, not source — also GDPR-sensitive) ====
 backend/medicalFiles/
+backend-spring/medicalFiles/
