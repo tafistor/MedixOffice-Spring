@@ -123,6 +123,7 @@ export const notifications = {
 export const payments = {
   payWithPaypal: (amount, invoiceId) => api.post('/payments/paypal', { amount, invoiceId }),
   payWithStripe: (amount, invoiceId) => api.post('/payments/stripe', { amount, invoiceId }),
+  capturePaypal: (orderId, invoiceId) => api.post('/payments/paypal/capture', { orderId, invoiceId }),
 };
 
 export const passwordReset = {

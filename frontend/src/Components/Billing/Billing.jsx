@@ -32,10 +32,35 @@ function Billing() {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentSuccess = urlParams.get('payment_success');
     const invoiceId = urlParams.get('invoice_id');
-    
-    if (paymentSuccess === 'true' && invoiceId) {
+    // PayPal appends its own order id as `token` when redirecting back to
+    // return_url; Stripe's success_url has no such param. Use it to tell the
+    // two return flows apart, since only PayPal needs a server-side capture.
+    const paypalOrderId = urlParams.get('token');
+
+    if (paymentSuccess === 'true' && invoiceId && paypalOrderId) {
+      capturePaypalPayment(paypalOrderId, invoiceId);
+      window.history.replaceState({}, document.title, '/billing');
+    } else if (paymentSuccess === 'true' && invoiceId) {
       updateInvoiceStatus(invoiceId, 'paid');
       window.history.replaceState({}, document.title, '/billing');
+    }
+  };
+
+  const capturePaypalPayment = async (orderId, invoiceId) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+
+      await payments.capturePaypal(orderId, invoiceId);
+      await loadInvoices();
+    } catch (error) {
+      if (error.response?.status === 403) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
   };
 
