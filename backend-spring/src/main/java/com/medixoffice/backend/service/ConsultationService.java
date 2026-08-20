@@ -125,6 +125,8 @@ public class ConsultationService {
     private ConsultationResponse toResponse(Consultation consultation) {
         return new ConsultationResponse(
                 consultation.getId(),
+                consultation.getPatient().getId(),
+                consultation.getDoctor().getId(),
                 consultation.getDate(),
                 consultation.getTime(),
                 consultation.getType(),

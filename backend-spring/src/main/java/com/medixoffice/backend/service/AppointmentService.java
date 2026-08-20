@@ -247,6 +247,8 @@ public class AppointmentService {
     private AppointmentResponse toResponse(Appointment appointment) {
         return new AppointmentResponse(
                 appointment.getId(),
+                appointment.getPatient().getId(),
+                appointment.getDoctor().getId(),
                 appointment.getDate(),
                 appointment.getTime(),
                 appointment.getVisitDescription(),

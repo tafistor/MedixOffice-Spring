@@ -102,6 +102,8 @@ public class InvoiceService {
 
         return new InvoiceResponse(
                 invoice.getId(),
+                invoice.getPatient().getId(),
+                invoice.getConsultation() != null ? invoice.getConsultation().getId() : null,
                 invoice.getDate(),
                 invoice.getAmount(),
                 invoice.getService(),
@@ -115,6 +117,8 @@ public class InvoiceService {
     private ConsultationResponse consultationResponseOf(Consultation consultation) {
         return new ConsultationResponse(
                 consultation.getId(),
+                consultation.getPatient().getId(),
+                consultation.getDoctor().getId(),
                 consultation.getDate(),
                 consultation.getTime(),
                 consultation.getType(),

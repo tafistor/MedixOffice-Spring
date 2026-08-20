@@ -289,6 +289,9 @@ public class MedicalRecordService {
 
         return new MedicalRecordResponse(
                 record.getId(),
+                record.getPatient().getId(),
+                record.getDoctor().getId(),
+                record.getConsultation().getId(),
                 record.getRecordType(),
                 record.getDiagnosis(),
                 record.getTreatment(),
