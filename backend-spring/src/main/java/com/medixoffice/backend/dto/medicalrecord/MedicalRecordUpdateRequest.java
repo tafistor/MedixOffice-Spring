@@ -1,0 +1,20 @@
+package com.medixoffice.backend.dto.medicalrecord;
+
+import com.medixoffice.backend.entity.MedicalRecordStatus;
+import com.medixoffice.backend.entity.RecordType;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+public record MedicalRecordUpdateRequest(
+        RecordType recordType,
+        String diagnosis,
+        String treatment,
+        String prescription,
+        MedicalRecordStatus status,
+        Boolean isConfidential,
+        Integer doctorId,
+        List<MultipartFile> labResults,
+        List<MultipartFile> attachments
+) {
+}
