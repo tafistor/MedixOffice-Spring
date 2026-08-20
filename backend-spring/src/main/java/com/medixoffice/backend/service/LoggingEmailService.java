@@ -49,4 +49,15 @@ public class LoggingEmailService implements EmailService {
             notificationRepository.save(new Notification(user, message, NotificationType.appointment));
         });
     }
+
+    @Override
+    public void sendResetCodeEmail(String email, String code, Integer userId) {
+        log.info("[EMAIL STUB] Would send password reset code to {}", email);
+
+        // Node used a 'security' notification type here, which isn't a valid value
+        // for the live ENUM('appointment','invoice','general') column - using
+        // 'general' instead of replicating that bug.
+        userRepository.findById(userId).ifPresent(user ->
+                notificationRepository.save(new Notification(user, "Reset code sent to " + email, NotificationType.general)));
+    }
 }
