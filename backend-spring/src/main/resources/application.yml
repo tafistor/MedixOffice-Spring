@@ -64,6 +64,10 @@ app:
     medical-files-dir: ${MEDICAL_FILES_DIR:./medicalFiles}
   email:
     from: ${EMAIL_FROM:${EMAIL_USER}}
+  seed-data:
+    # Off by default so it never runs against a real/deployed DB by accident.
+    # Enable locally with SEED_DATA_ENABLED=true when you want a fresh demo dataset.
+    enabled: ${SEED_DATA_ENABLED:false}
 
 stripe:
   secret-key: ${STRIPE_SECRET_KEY:}
