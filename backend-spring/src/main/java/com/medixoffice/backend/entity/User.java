@@ -52,6 +52,11 @@ public class User {
 
     private LocalDateTime resetBlockedUntil;
 
+    @Column(nullable = false)
+    private int failedLoginAttempts = 0;
+
+    private LocalDateTime lockedUntil;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -150,6 +155,22 @@ public class User {
 
     public void setResetBlockedUntil(LocalDateTime resetBlockedUntil) {
         this.resetBlockedUntil = resetBlockedUntil;
+    }
+
+    public int getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(int failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
+    public LocalDateTime getLockedUntil() {
+        return lockedUntil;
+    }
+
+    public void setLockedUntil(LocalDateTime lockedUntil) {
+        this.lockedUntil = lockedUntil;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -59,6 +59,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN.value()));
     }
 
+    @ExceptionHandler(AccountLockedException.class)
+    public ResponseEntity<ErrorResponse> handleAccountLocked(AccountLockedException ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(new ErrorResponse(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS.value()));
+    }
+
     /** ex.getMessage() is always a safe, generic string here - the real provider error (which can contain sensitive detail) is logged server-side only via the cause. */
     @ExceptionHandler(PaymentException.class)
     public ResponseEntity<ErrorResponse> handlePaymentException(PaymentException ex) {
