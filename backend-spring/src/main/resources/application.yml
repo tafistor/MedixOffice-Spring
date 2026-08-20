@@ -38,8 +38,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDBDialect
-        jdbc:
-          time_zone: ${DB_TIMEZONE:UTC}
+        # No explicit jdbc.time_zone: forcing UTC here silently shifted plain
+        # LocalTime binds by an hour (java.sql.Time's Calendar conversion
+        # resolves DST against 1970-01-01, not today, so a Europe/Brussels JVM
+        # writing "08:00" landed in the DB as 07:00). App, DB server, and users
+        # are all in the same zone, so leaving this unset avoids the bug and
+        # everything binds/reads as plain local wall-clock time.
 
   mail:
     host: ${EMAIL_HOST:smtp.gmail.com}

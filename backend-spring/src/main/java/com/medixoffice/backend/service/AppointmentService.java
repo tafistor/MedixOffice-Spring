@@ -187,9 +187,13 @@ public class AppointmentService {
 
     private void checkScheduleAvailability(Integer doctorId, LocalDate date, String time) {
         WorkDay dayOfWeek = toWorkDay(date);
+        // The frontend sends slots as "HH:mm to HH:mm" (and stores that whole
+        // string on the appointment, matching Node) - only the start needs
+        // parsing to check it falls inside a WorkSchedule window.
+        String startTime = time.split(" to ")[0];
         LocalTime parsedTime;
         try {
-            parsedTime = LocalTime.parse(time);
+            parsedTime = LocalTime.parse(startTime);
         } catch (Exception e) {
             throw new SlotUnavailableException("Heure de rendez-vous invalide");
         }
