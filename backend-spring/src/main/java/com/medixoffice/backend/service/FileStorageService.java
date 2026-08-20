@@ -1,6 +1,7 @@
 package com.medixoffice.backend.service;
 
 import com.medixoffice.backend.dto.medicalrecord.StoredFile;
+import com.medixoffice.backend.exception.UnsupportedFileTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,10 +12,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-/** Mirrors Node's uploadMiddleware.js: one subfolder per patient, a unique suffix per stored filename. */
+/** Mirrors Node's uploadMiddleware.js: one subfolder per patient, a unique suffix per stored filename, an allowed-type check. */
 @Service
 public class FileStorageService {
+
+    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
+            "image/jpeg", "image/png", "image/gif", "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "text/plain"
+    );
 
     private final Path baseDir;
 
@@ -40,7 +49,16 @@ public class FileStorageService {
                 continue;
             }
 
-            String originalName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "file";
+            if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
+                throw new UnsupportedFileTypeException("Type de fichier non autorisé: " + file.getContentType());
+            }
+
+            // Path.getFileName() strips any directory component a client could smuggle in
+            // (e.g. "../../etc/passwd") - without this, Path.resolve() below would happily
+            // write outside patientDir since it doesn't sanitize ".." segments itself.
+            String originalName = file.getOriginalFilename() != null
+                    ? Path.of(file.getOriginalFilename()).getFileName().toString()
+                    : "file";
             int dot = originalName.lastIndexOf('.');
             String extension = dot >= 0 ? originalName.substring(dot) : "";
             String base = dot >= 0 ? originalName.substring(0, dot) : originalName;

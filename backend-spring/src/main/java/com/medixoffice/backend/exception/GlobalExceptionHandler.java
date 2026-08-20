@@ -59,6 +59,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN.value()));
     }
 
+    @ExceptionHandler(UnsupportedFileTypeException.class)
+    public ResponseEntity<ErrorResponse> handleUnsupportedFileType(UnsupportedFileTypeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
+    }
+
     @ExceptionHandler(ResetCodeExpiredException.class)
     public ResponseEntity<ErrorResponse> handleResetCodeExpired(ResetCodeExpiredException ex) {
         return ResponseEntity.status(HttpStatus.GONE)
