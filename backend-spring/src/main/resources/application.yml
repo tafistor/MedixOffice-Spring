@@ -7,6 +7,14 @@ spring:
   application:
     name: medixoffice-backend
 
+  jackson:
+    mapper:
+      # The frontend (unchanged from the Node app) sends lowercase status
+      # strings like "paid" - MySQL/MariaDB's default ci collation made that
+      # work transparently under Sequelize, but Jackson's enum deserialization
+      # is case-sensitive by default and would 400 on "paid" vs InvoiceStatus.Paid.
+      accept-case-insensitive-enums: true
+
   datasource:
     url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:medixoffice}
     username: ${DB_USER:root}
