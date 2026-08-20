@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Plus, Stethoscope, ArrowLeft, DollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AddEditAppointment from './AddEditAppointment';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import { appointments, patients, doctors, secretarySpecialties } from '../../services/api';
@@ -8,6 +9,7 @@ import { useAuth } from '../../context/AuthContext';
 import './Appointments.css';
 
 function Appointments() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [showAddEdit, setShowAddEdit] = useState(false);
   const [editingAppointment, setEditingAppointment] = useState(null);
@@ -97,10 +99,10 @@ function Appointments() {
             <Link to="/dashboard" className="nav-back">
               <ArrowLeft className="nav-back-icon" />
             </Link>
-            <h1>Appointments</h1>
+            <h1>{t('appointments.title')}</h1>
           </div>
           {(user.role === 'patient' || user.role === 'secretary' ) && (
-            <button 
+            <button
               onClick={() => {
                 setEditingAppointment(null);
                 setShowAddEdit(true);
@@ -108,7 +110,7 @@ function Appointments() {
               className="btn-new-appointment"
             >
               <Plus className="btn-new-appointment-icon" />
-              New Appointment
+              {t('appointments.newAppointment')}
             </button>
           )}
         </div>
@@ -117,21 +119,21 @@ function Appointments() {
           {appointmentsList.length === 0 ? (
             <div className="no-appointments">
               <Calendar className="no-appointments-icon" />
-              <h3>No Appointments Found</h3>
-              <p>There are no appointments to display.</p>
+              <h3>{t('appointments.noAppointmentsTitle')}</h3>
+              <p>{t('appointments.noAppointmentsText')}</p>
             </div>
           ) : (
             <table>
               <thead>
                 <tr>
-                  <th>Patient</th>
-                  <th>Doctor</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Visit Description</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>{t('appointments.table.patient')}</th>
+                  <th>{t('appointments.table.doctor')}</th>
+                  <th>{t('appointments.table.date')}</th>
+                  <th>{t('appointments.table.time')}</th>
+                  <th>{t('appointments.table.visitDescription')}</th>
+                  <th>{t('appointments.table.amount')}</th>
+                  <th>{t('appointments.table.status')}</th>
+                  <th>{t('appointments.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -190,25 +192,25 @@ function Appointments() {
                     </td>
                     <td>
                       <span className={`status-tag status-tag-${appointment.status}`}>
-                        {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                        {t(`common.status.${appointment.status}`)}
                       </span>
                     </td>
                     <td>
                       <div className="action-buttons">
                         {(user.role === 'secretary' || user.role === 'doctor') && (
-                          <button 
+                          <button
                             onClick={() => handleEdit(appointment)}
                             className="btn-edit"
                           >
-                            Edit
+                            {t('appointments.edit')}
                           </button>
                         )}
                         {appointment.status === 'pending' && (
-                          <button 
+                          <button
                             onClick={() => handleCancel(appointment.id)}
                             className="btn-cancel"
                           >
-                            Cancel
+                            {t('appointments.cancel')}
                           </button>
                         )}
                       </div>
@@ -235,10 +237,10 @@ function Appointments() {
           setAppointmentToCancel(null);
         }}
         onConfirm={confirmCancelAppointment}
-        title="Cancel Appointment"
-        message="Are you sure you want to cancel this appointment? This action cannot be undone."
-        confirmText="Cancel Appointment"
-        cancelText="Keep Appointment"
+        title={t('appointments.cancelDialog.title')}
+        message={t('appointments.cancelDialog.message')}
+        confirmText={t('appointments.cancelDialog.confirm')}
+        cancelText={t('appointments.cancelDialog.keep')}
         type="warning"
       />
     </div>

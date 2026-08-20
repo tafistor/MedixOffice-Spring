@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { auth } from '../../services/api';
 import { motion } from 'framer-motion';
 import Logo from '../Logo/Logo';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Login.css';
 
 function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,16 +30,16 @@ function Login() {
 
   useEffect(() => {
     if (touched.email) {
-      if (!email) setEmailError('Please enter a valid email address');
-      else if (!validateEmail(email)) setEmailError('Please enter a valid email address');
+      if (!email) setEmailError(t('login.emailInvalid'));
+      else if (!validateEmail(email)) setEmailError(t('login.emailInvalid'));
       else setEmailError('');
     }
 
     if (touched.password) {
-      if (!password) setPasswordError('Password is required');
+      if (!password) setPasswordError(t('login.passwordRequired'));
       else setPasswordError('');
     }
-  }, [email, password, touched]);
+  }, [email, password, touched, t]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,11 +49,11 @@ function Login() {
     const response = await auth.login({ email, password })
       .catch(err => {
         if (err.response?.status === 404) {
-          setError('This email address is not registered');
+          setError(t('login.errorNotRegistered'));
         } else if (err.response?.status === 401) {
-          setError('Invalid email or password');
+          setError(t('login.errorInvalidCredentials'));
         } else {
-          setError('An error occurred during login');
+          setError(t('login.errorGeneric'));
         }
         return { data: null };
       });
@@ -78,7 +81,10 @@ function Login() {
         <div className="logo-container">
           <Logo />
         </div>
-        <h2 className="login-title">Welcome Back</h2>
+        <div className="login-language-switcher">
+          <LanguageSwitcher />
+        </div>
+        <h2 className="login-title">{t('login.welcomeBack')}</h2>
         {error && (
           <motion.div 
             initial={{ x: -10 }}
@@ -91,7 +97,7 @@ function Login() {
         )}
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label">{t('login.email')}</label>
             <input
               type="email"
               value={email}
@@ -103,7 +109,7 @@ function Login() {
             {emailError && <span className="error-text">{emailError}</span>}
           </div>
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">{t('login.password')}</label>
             <input
               type="password"
               value={password}
@@ -115,18 +121,18 @@ function Login() {
             {passwordError && <span className="error-text">{passwordError}</span>}
           </div>
           <button type="submit" className="submit-button" disabled={!isFormValid}>
-            Login
+            {t('login.loginButton')}
           </button>
         </form>
         <p className="signup-text">
-          Don't have an account?{' '}
+          {t('login.noAccount')}{' '}
           <a href="/signup" className="signup-link">
-            Sign up
+            {t('login.signUp')}
           </a>
         </p>
         <p className="signup-text">
           <a href="/password-reset" className="signup-link">
-            Mot de passe oublié ?
+            {t('login.forgotPassword')}
           </a>
         </p>
       </motion.div>

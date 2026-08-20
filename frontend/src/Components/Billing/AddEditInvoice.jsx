@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { patients } from '../../services/api';
 import './AddEditInvoice.css';
 
 function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly = false, currentPatient = null }) {
+  const { t } = useTranslation();
   const initialFormState = {
     patientId: '',
     date: new Date().toISOString().split('T')[0],
@@ -66,21 +68,21 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
     }
     
     if (value.includes('  ')) {
-      setServiceError('Multiple spaces are not allowed');
+      setServiceError(t('invoiceForm.errors.multipleSpaces'));
       return;
     }
-    
+
     if (value.includes("''") || value.includes('--')) {
       return;
     }
-    
+
     const validPattern = /^[a-zA-ZÀ-ÿ',\s-]*$/;
-    
+
     if (value && !validPattern.test(value)) {
-      setServiceError('Only letters, single spaces, apostrophes, and hyphens are allowed');
+      setServiceError(t('invoiceForm.errors.invalidChars'));
       return;
     }
-    
+
     setServiceError('');
     setFormData(prev => ({
       ...prev,
@@ -90,19 +92,19 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
 
   const handleServiceBlur = (e) => {
     const { value } = e.target;
-    
+
     if (value.includes('  ')) {
-      setServiceError('Multiple spaces are not allowed');
+      setServiceError(t('invoiceForm.errors.multipleSpaces'));
       return;
     }
-    
+
     const validPattern = /^[a-zA-ZÀ-ÿ',\s-]*$/;
-    
+
     if (value && !validPattern.test(value)) {
-      setServiceError('Only letters, single spaces, apostrophes, and hyphens are allowed');
+      setServiceError(t('invoiceForm.errors.invalidChars'));
       return;
     }
-    
+
     setServiceError('');
   };
 
@@ -175,9 +177,9 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
       <div className="dialog-content">
         <div className="dialog-header">
           <h2>
-            {isReadOnly 
-              ? 'Invoice Details' 
-              : (invoice ? 'Edit Invoice' : 'Create New Invoice')
+            {isReadOnly
+              ? t('invoiceForm.viewTitle')
+              : (invoice ? t('invoiceForm.editTitle') : t('invoiceForm.createTitle'))
             }
           </h2>
           <button className="close-btn" onClick={handleClose}>
@@ -187,10 +189,10 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
 
         <form onSubmit={handleSubmit} className="dialog-form">
           <div className="form-group">
-            <label htmlFor="patientId">Patient</label>
+            <label htmlFor="patientId">{t('invoiceForm.patientLabel')}</label>
             {isReadOnly ? (
               <div className="form-display-value">
-                {getPatientDisplayName() || 'Patient inconnu'}
+                {getPatientDisplayName() || t('invoiceForm.unknownPatient')}
               </div>
             ) : (
               <select
@@ -201,7 +203,7 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
                 required
                 disabled={invoice !== null}
               >
-                <option value="">Select a patient</option>
+                <option value="">{t('invoiceForm.selectPatient')}</option>
                 {patientsList.map((patient) => (
                   <option key={patient.id} value={patient.id}>
                     {patient.User?.lastName} {patient.User?.firstName}
@@ -213,7 +215,7 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="date">Date</label>
+              <label htmlFor="date">{t('invoiceForm.dateLabel')}</label>
               {isReadOnly ? (
                 <div className="form-display-value">
                   {new Date(formData.date).toLocaleDateString('fr-FR')}
@@ -231,7 +233,7 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="invoiceNumber">Invoice Number</label>
+              <label htmlFor="invoiceNumber">{t('invoiceForm.invoiceNumberLabel')}</label>
               { isReadOnly ? (
                     <div className="form-display-value">
                     {formData.invoiceNumber}
@@ -253,7 +255,7 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="service">Service</label>
+              <label htmlFor="service">{t('invoiceForm.serviceLabel')}</label>
               {isReadOnly ? (
                 <div className="form-display-value">
                   {formData.service}
@@ -268,7 +270,7 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
                     onChange={handleInputChange}
                     onBlur={handleServiceBlur}
                     required
-                    placeholder="Description du service médical"
+                    placeholder={t('invoiceForm.servicePlaceholder')}
                   />
                   {serviceError && (
                     <p className="error-text" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
@@ -279,7 +281,7 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="amount">Amount (€)</label>
+              <label htmlFor="amount">{t('invoiceForm.amountLabel')}</label>
               {isReadOnly ? (
                 <div className="form-display-value">
                   {Number(formData.amount).toFixed(2)} €
@@ -301,11 +303,11 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
           </div>
 
           <div className="form-group">
-            <label htmlFor="status">Status</label>
+            <label htmlFor="status">{t('invoiceForm.statusLabel')}</label>
             {isReadOnly ? (
               <div className="form-display-value">
                 <span className={`status-badge status-${formData.status.toLowerCase()}`}>
-                  {formData.status}
+                  {t(`common.status.${formData.status.toLowerCase()}`)}
                 </span>
               </div>
             ) : (
@@ -316,26 +318,26 @@ function AddEditInvoice({ isOpen, onClose, onSubmit, invoice = null, isReadOnly 
                 onChange={handleInputChange}
                 required
               >
-                <option value="Pending">Pending</option>
-                <option value="Paid">Paid</option>
-                <option value="Overdue">Overdue</option>
-                <option value="Cancelled">Cancelled</option>
+                <option value="Pending">{t('common.status.pending')}</option>
+                <option value="Paid">{t('common.status.paid')}</option>
+                <option value="Overdue">{t('common.status.overdue')}</option>
+                <option value="Cancelled">{t('common.status.cancelled')}</option>
               </select>
             )}
           </div>
 
           <div className="dialog-actions">
             <button type="button" className="cancel-btn" onClick={handleClose}>
-              {isReadOnly ? 'Close' : 'Cancel'}
+              {isReadOnly ? t('invoiceForm.close') : t('invoiceForm.cancel')}
             </button>
             {!isReadOnly && (
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="submit-btn"
                 disabled={!isFormValid()}
                 style={{ opacity: isFormValid() ? 1 : 0.5, cursor: isFormValid() ? 'pointer' : 'not-allowed' }}
               >
-                {invoice ? 'Update Invoice' : 'Create Invoice'}
+                {invoice ? t('invoiceForm.updateInvoice') : t('invoiceForm.createInvoice')}
               </button>
             )}
           </div>

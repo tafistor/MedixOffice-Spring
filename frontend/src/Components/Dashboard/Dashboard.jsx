@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Users, UserPlus, Calendar, Stethoscope, LogOut, FileText, CreditCard, ClipboardList, Menu, LayoutDashboard, Clock, Settings, Bell, X } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { doctors, patients, appointments, workSchedules, consultations, notifications } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import DoctorDetails from '../Doctors/DoctorDetails';
 import ViewPatient from '../Patients/ViewPatient';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Dashboard.css';
 
 function Dashboard() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -144,22 +147,22 @@ function Dashboard() {
   };
 
   const stats = [
-    { title: 'Doctors', count: doctorCount, icon: Users, className: "icon-doctors" },
-    { title: 'Patients', count: patientCount, icon: UserPlus, className: "icon-patients" },
-    { title: 'Appointments', count: appointmentCount, icon: Calendar, className: "icon-appointments" },
-    { title: 'Consultations', count: consultationCount, icon: Stethoscope, className: "icon-consultations" },
+    { title: t('dashboard.stats.doctors'), count: doctorCount, icon: Users, className: "icon-doctors" },
+    { title: t('dashboard.stats.patients'), count: patientCount, icon: UserPlus, className: "icon-patients" },
+    { title: t('dashboard.stats.appointments'), count: appointmentCount, icon: Calendar, className: "icon-appointments" },
+    { title: t('dashboard.stats.consultations'), count: consultationCount, icon: Stethoscope, className: "icon-consultations" },
   ];
 
   const menuItems = [
-    { title: 'Dashboard', icon: LayoutDashboard, path: '/dashboard',access: ['admin', 'secretary', 'doctor', 'patient'] },
-    { title: 'Doctors', icon: Users, path: '/doctors', access: ['admin', 'secretary'] },
-    { title: 'Patients', icon: UserPlus, path: '/patients',access: ['admin', 'secretary', 'doctor']  },
-    { title: 'Appointments', icon: Calendar, path: '/appointments',access: ['admin', 'secretary', 'patient']  },
-    { title: 'Consultations',  icon: ClipboardList,  path: '/consultations', access: ['admin', 'doctor', 'patient'] },
-    { title: 'Medical Records',  icon: FileText,  path: '/medical-records', access: ['admin', 'doctor', 'patient'] },
-    { title: 'Billing', icon: CreditCard, path: '/billing',access: ['admin', 'secretary', 'patient'] },
-    { title: 'Schedule', icon: Clock, path: '/schedule',access: ['admin', 'doctor', 'secretary'] },
-    { title: 'Secretary Management', icon: Settings, path: '/secretary-management', access: ['admin'] },
+    { title: t('dashboard.menu.dashboard'), icon: LayoutDashboard, path: '/dashboard',access: ['admin', 'secretary', 'doctor', 'patient'] },
+    { title: t('dashboard.menu.doctors'), icon: Users, path: '/doctors', access: ['admin', 'secretary'] },
+    { title: t('dashboard.menu.patients'), icon: UserPlus, path: '/patients',access: ['admin', 'secretary', 'doctor']  },
+    { title: t('dashboard.menu.appointments'), icon: Calendar, path: '/appointments',access: ['admin', 'secretary', 'patient']  },
+    { title: t('dashboard.menu.consultations'),  icon: ClipboardList,  path: '/consultations', access: ['admin', 'doctor', 'patient'] },
+    { title: t('dashboard.menu.medicalRecords'),  icon: FileText,  path: '/medical-records', access: ['admin', 'doctor', 'patient'] },
+    { title: t('dashboard.menu.billing'), icon: CreditCard, path: '/billing',access: ['admin', 'secretary', 'patient'] },
+    { title: t('dashboard.menu.schedule'), icon: Clock, path: '/schedule',access: ['admin', 'doctor', 'secretary'] },
+    { title: t('dashboard.menu.secretaryManagement'), icon: Settings, path: '/secretary-management', access: ['admin'] },
   ];
 
   const handleLogout = () => {
@@ -229,10 +232,11 @@ function Dashboard() {
           </div>
           <Logo />
           <div className="navbar-right">
+            <LanguageSwitcher />
             <span className="welcome-text">
-              Welcome, {user?.firstName} {user?.lastName}
+              {t('dashboard.welcome', { name: `${user?.firstName} ${user?.lastName}` })}
             </span>
-            
+
             {/* Bouton de notification pour les secrétaires */}
             {user?.role === 'secretary' && unreadNotifications.length > 0 && (
               <div className="notification-container">
@@ -247,7 +251,7 @@ function Dashboard() {
                 {showNotificationDropdown && (
                   <div className="notification-dropdown">
                     <div className="notification-dropdown-header">
-                      <span>Notifications ({unreadNotifications.length})</span>
+                      <span>{t('dashboard.notifications')} ({unreadNotifications.length})</span>
                       <button 
                         onClick={() => setShowNotificationDropdown(false)}
                         className="close-dropdown-btn"
@@ -278,7 +282,7 @@ function Dashboard() {
             
             <button className="logout-button" onClick={handleLogout}>
               <LogOut className="h-5 w-5 sm:mr-1" />
-              <span className="hidden sm:inline">Logout</span>
+              <span className="hidden sm:inline">{t('dashboard.logout')}</span>
             </button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DollarSign, CreditCard, FileText, Download, Eye, Plus, ArrowLeft, Trash, Edit } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './Billing.css';
 import axios from 'axios';
 import AddEditInvoice from './AddEditInvoice';
@@ -9,8 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { invoices, patients, payments } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { generateInvoicePDF } from '../../utils/pdfGenerator';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 
 function Billing() {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
@@ -229,55 +232,58 @@ const handleDownloadInvoice = async (invoice) => {
             <ArrowLeft className="icons" />
           </button>
           <div>
-            <h1 className="header-title">Billing</h1>
+            <h1 className="header-title">{t('billing.title')}</h1>
           </div>
         </div>
-        {user?.role !== 'patient' && (
-          <button className="add-billing" onClick={handleAddInvoice}>
-            <Plus className="icons" />
-            New Invoice
-          </button>
-        )}
+        <div className="billing-header-actions">
+          <LanguageSwitcher />
+          {user?.role !== 'patient' && (
+            <button className="add-billing" onClick={handleAddInvoice}>
+              <Plus className="icons" />
+              {t('billing.newInvoice')}
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="invoices-section">
         <div className="section-header">
-          <h2 className="section-title">Recent Invoices</h2>
+          <h2 className="section-title">{t('billing.recentInvoices')}</h2>
           <div className="invoice-filters">
-            <button 
+            <button
               className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`}
               onClick={() => setActiveFilter('all')}
             >
-              All
+              {t('billing.filters.all')}
             </button>
-            <button 
+            <button
               className={`filter-button ${activeFilter === 'paid' ? 'active' : ''}`}
               onClick={() => setActiveFilter('paid')}
             >
-              Paid
+              {t('billing.filters.paid')}
             </button>
-            <button 
+            <button
               className={`filter-button ${activeFilter === 'pending' ? 'active' : ''}`}
               onClick={() => setActiveFilter('pending')}
             >
-              Pending
+              {t('billing.filters.pending')}
             </button>
-            <button 
+            <button
               className={`filter-button ${activeFilter === 'overdue' ? 'active' : ''}`}
               onClick={() => setActiveFilter('overdue')}
             >
-              Overdue
+              {t('billing.filters.overdue')}
             </button>
           </div>
         </div>
         <table className="invoices-table">
           <thead>
             <tr className="table-header">
-              <th>Invoice Details</th>
-              <th>Service</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>{t('billing.table.invoiceDetails')}</th>
+              <th>{t('billing.table.service')}</th>
+              <th>{t('billing.table.amount')}</th>
+              <th>{t('billing.table.status')}</th>
+              <th>{t('billing.table.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -290,7 +296,7 @@ const handleDownloadInvoice = async (invoice) => {
                       <h3>
                         {user?.role === 'patient' && currentPatient 
                           ? `${currentPatient.User?.lastName || ''} ${currentPatient.User?.firstName || ''}`.trim()
-                          : `${invoice.Patient?.User?.lastName || ''} ${invoice.Patient?.User?.firstName || ''}`.trim() || 'Patient inconnu'
+                          : `${invoice.Patient?.User?.lastName || ''} ${invoice.Patient?.User?.firstName || ''}`.trim() || t('billing.unknownPatient')
                         }
                       </h3>
                       <p>{invoice.invoiceNumber} • {new Date(invoice.date).toLocaleDateString('fr-FR')}</p>
@@ -305,45 +311,45 @@ const handleDownloadInvoice = async (invoice) => {
                 </td>
                 <td>
                   <span className={`invoice-status ${getStatusClass(invoice.status)}`}>
-                    {invoice.status}
+                    {t(`common.status.${invoice.status.toLowerCase()}`)}
                   </span>
                 </td>
                 <td>
                   <div className="invoice-actions">
-                    <button 
-                      className="action-link" 
+                    <button
+                      className="action-link"
                       onClick={() => user?.role === 'patient' ? handleViewInvoice(invoice) : handleEditInvoice(invoice)}
-                      title="Voir les détails"
+                      title={t('billing.viewDetailsTitle')}
                     >
                       <Eye className="mon-element" />
-                      View
+                      {t('billing.view')}
                     </button>
                     {invoice.status.toLowerCase() !== 'paid' && (
-                      <button 
+                      <button
                         className="action-link"
                         onClick={() => handlePayInvoice(invoice)}
-                        title="Payer"
+                        title={t('billing.pay')}
                       >
                         <CreditCard className="mon-element" />
-                        Payer
+                        {t('billing.pay')}
                       </button>
                     )}
-                    <button 
+                    <button
                       className="action-link"
                       onClick={() => handleDownloadInvoice(invoice)}
-                      title="Télécharger PDF"
+                      title={t('billing.downloadPdf')}
                     >
                       <Download className="mon-element" />
-                      Download PDF
+                      {t('billing.downloadPdf')}
                     </button>
                     {user?.role !== 'patient' && (
-                      <button 
+                      <button
                         className="action-link delete-action"
                         onClick={() => handleDeleteInvoice(invoice.id)}
-                        title="Supprimer"
+                        title={t('billing.delete')}
                       >
                         <Trash className="mon-element" />
-                        Delete
+                        {t('billing.delete')}
                       </button>
                     )}
                   </div>
@@ -379,10 +385,10 @@ const handleDownloadInvoice = async (invoice) => {
           setInvoiceToDelete(null);
         }}
         onConfirm={confirmDeleteInvoice}
-        title="Delete Invoice"
-        message="Are you sure you want to delete this invoice? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('billing.deleteDialog.title')}
+        message={t('billing.deleteDialog.message')}
+        confirmText={t('billing.deleteDialog.confirm')}
+        cancelText={t('billing.deleteDialog.cancel')}
         type="danger"
       />
     </div>

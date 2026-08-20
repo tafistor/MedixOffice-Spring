@@ -1,0 +1,182 @@
+{
+  "common": {
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmé",
+      "completed": "Terminé",
+      "cancelled": "Annulé",
+      "paid": "Payée",
+      "overdue": "En retard"
+    }
+  },
+  "language": {
+    "en": "EN",
+    "fr": "FR"
+  },
+  "login": {
+    "welcomeBack": "Bon retour",
+    "email": "Email",
+    "password": "Mot de passe",
+    "loginButton": "Connexion",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signUp": "S'inscrire",
+    "forgotPassword": "Mot de passe oublié ?",
+    "emailInvalid": "Veuillez entrer une adresse email valide",
+    "passwordRequired": "Le mot de passe est requis",
+    "errorNotRegistered": "Cette adresse email n'est pas enregistrée",
+    "errorInvalidCredentials": "Email ou mot de passe invalide",
+    "errorGeneric": "Une erreur est survenue lors de la connexion"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue, {{name}}",
+    "logout": "Déconnexion",
+    "notifications": "Notifications",
+    "menu": {
+      "dashboard": "Tableau de bord",
+      "doctors": "Médecins",
+      "patients": "Patients",
+      "appointments": "Rendez-vous",
+      "consultations": "Consultations",
+      "medicalRecords": "Dossiers médicaux",
+      "billing": "Facturation",
+      "schedule": "Planning",
+      "secretaryManagement": "Gestion des secrétaires"
+    },
+    "stats": {
+      "doctors": "Médecins",
+      "patients": "Patients",
+      "appointments": "Rendez-vous",
+      "consultations": "Consultations"
+    }
+  },
+  "appointments": {
+    "title": "Rendez-vous",
+    "newAppointment": "Nouveau rendez-vous",
+    "noAppointmentsTitle": "Aucun rendez-vous trouvé",
+    "noAppointmentsText": "Il n'y a aucun rendez-vous à afficher.",
+    "table": {
+      "patient": "Patient",
+      "doctor": "Médecin",
+      "date": "Date",
+      "time": "Heure",
+      "visitDescription": "Motif de la visite",
+      "amount": "Montant",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "edit": "Modifier",
+    "cancel": "Annuler",
+    "cancelDialog": {
+      "title": "Annuler le rendez-vous",
+      "message": "Êtes-vous sûr de vouloir annuler ce rendez-vous ? Cette action est irréversible.",
+      "confirm": "Annuler le rendez-vous",
+      "keep": "Conserver le rendez-vous"
+    }
+  },
+  "appointmentForm": {
+    "newTitle": "Nouveau rendez-vous",
+    "editTitle": "Modifier le rendez-vous",
+    "patientLabel": "Patient",
+    "patientSearchPlaceholder": "Rechercher un patient...",
+    "doctorLabel": "Médecin",
+    "doctorSearchPlaceholder": "Rechercher par nom ou spécialité...",
+    "noDoctorsFound": "Aucun médecin trouvé",
+    "visitTypeLabel": "Type de visite",
+    "selectVisitType": "Sélectionner un type de visite",
+    "other": "Autre",
+    "customVisitTypePlaceholder": "Entrez un type de visite personnalisé...",
+    "amountLabel": "Montant",
+    "dateLabel": "Date",
+    "timeLabel": "Heure",
+    "selectTimeSlot": "Sélectionner un créneau horaire",
+    "loadingSlots": "Chargement des créneaux disponibles...",
+    "selectDoctorAndDate": "Sélectionnez un médecin et une date",
+    "doctorNotWorking": "Le médecin ne travaille pas ce jour-là",
+    "noSlotsAvailable": "Aucun créneau disponible",
+    "statusLabel": "Statut",
+    "cancel": "Annuler",
+    "createAppointment": "Créer le rendez-vous",
+    "updateAppointment": "Mettre à jour le rendez-vous",
+    "errors": {
+      "multipleSpaces": "Les espaces multiples ne sont pas autorisés",
+      "invalidChars": "Seuls les lettres, espaces simples, apostrophes et tirets sont autorisés"
+    }
+  },
+  "patient": {
+    "title": "Informations du patient",
+    "todaysAppointments": "Rendez-vous d'aujourd'hui",
+    "loadingAppointments": "Chargement des rendez-vous...",
+    "noAppointmentsToday": "Aucun rendez-vous prévu aujourd'hui",
+    "personalInformation": "Informations personnelles",
+    "dateOfBirth": "Date de naissance",
+    "notSpecified": "Non spécifié",
+    "phone": "Téléphone",
+    "notProvided": "Non renseigné",
+    "email": "Email",
+    "address": "Adresse",
+    "medicalInformation": "Informations médicales",
+    "chronicDiseases": "Maladies chroniques",
+    "none": "Aucune",
+    "currentTreatments": "Traitements en cours",
+    "allergies": "Allergies",
+    "drPrefix": "Dr"
+  },
+  "billing": {
+    "title": "Facturation",
+    "newInvoice": "Nouvelle facture",
+    "recentInvoices": "Factures récentes",
+    "filters": {
+      "all": "Toutes",
+      "paid": "Payées",
+      "pending": "En attente",
+      "overdue": "En retard"
+    },
+    "table": {
+      "invoiceDetails": "Détails de la facture",
+      "service": "Service",
+      "amount": "Montant",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "unknownPatient": "Patient inconnu",
+    "view": "Voir",
+    "pay": "Payer",
+    "downloadPdf": "Télécharger PDF",
+    "delete": "Supprimer",
+    "viewDetailsTitle": "Voir les détails",
+    "deleteDialog": {
+      "title": "Supprimer la facture",
+      "message": "Êtes-vous sûr de vouloir supprimer cette facture ? Cette action est irréversible.",
+      "confirm": "Supprimer",
+      "cancel": "Annuler"
+    }
+  },
+  "payment": {
+    "chooseMethod": "Choisir le mode de paiement",
+    "amountToPay": "Montant à payer :",
+    "payWithPaypal": "Payer en toute sécurité avec PayPal",
+    "payWithStripe": "Payer par carte bancaire"
+  },
+  "invoiceForm": {
+    "viewTitle": "Détails de la facture",
+    "editTitle": "Modifier la facture",
+    "createTitle": "Créer une nouvelle facture",
+    "patientLabel": "Patient",
+    "selectPatient": "Sélectionner un patient",
+    "unknownPatient": "Patient inconnu",
+    "dateLabel": "Date",
+    "invoiceNumberLabel": "Numéro de facture",
+    "serviceLabel": "Service",
+    "servicePlaceholder": "Description du service médical",
+    "amountLabel": "Montant (€)",
+    "statusLabel": "Statut",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "updateInvoice": "Mettre à jour la facture",
+    "createInvoice": "Créer la facture",
+    "errors": {
+      "multipleSpaces": "Les espaces multiples ne sont pas autorisés",
+      "invalidChars": "Seuls les lettres, espaces simples, apostrophes et tirets sont autorisés"
+    }
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "common": {
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "paid": "Paid",
+      "overdue": "Overdue"
+    }
+  },
+  "language": {
+    "en": "EN",
+    "fr": "FR"
+  },
+  "login": {
+    "welcomeBack": "Welcome Back",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "forgotPassword": "Forgot password?",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "errorNotRegistered": "This email address is not registered",
+    "errorInvalidCredentials": "Invalid email or password",
+    "errorGeneric": "An error occurred during login"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}",
+    "logout": "Logout",
+    "notifications": "Notifications",
+    "menu": {
+      "dashboard": "Dashboard",
+      "doctors": "Doctors",
+      "patients": "Patients",
+      "appointments": "Appointments",
+      "consultations": "Consultations",
+      "medicalRecords": "Medical Records",
+      "billing": "Billing",
+      "schedule": "Schedule",
+      "secretaryManagement": "Secretary Management"
+    },
+    "stats": {
+      "doctors": "Doctors",
+      "patients": "Patients",
+      "appointments": "Appointments",
+      "consultations": "Consultations"
+    }
+  },
+  "appointments": {
+    "title": "Appointments",
+    "newAppointment": "New Appointment",
+    "noAppointmentsTitle": "No Appointments Found",
+    "noAppointmentsText": "There are no appointments to display.",
+    "table": {
+      "patient": "Patient",
+      "doctor": "Doctor",
+      "date": "Date",
+      "time": "Time",
+      "visitDescription": "Visit Description",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "cancelDialog": {
+      "title": "Cancel Appointment",
+      "message": "Are you sure you want to cancel this appointment? This action cannot be undone.",
+      "confirm": "Cancel Appointment",
+      "keep": "Keep Appointment"
+    }
+  },
+  "appointmentForm": {
+    "newTitle": "New Appointment",
+    "editTitle": "Edit Appointment",
+    "patientLabel": "Patient",
+    "patientSearchPlaceholder": "Search a patient...",
+    "doctorLabel": "Doctor",
+    "doctorSearchPlaceholder": "Search by name or specialty...",
+    "noDoctorsFound": "No doctors found",
+    "visitTypeLabel": "Visit Type",
+    "selectVisitType": "Select a visit type",
+    "other": "Other",
+    "customVisitTypePlaceholder": "Enter custom visit type...",
+    "amountLabel": "Amount",
+    "dateLabel": "Date",
+    "timeLabel": "Time",
+    "selectTimeSlot": "Select a time slot",
+    "loadingSlots": "Loading available time slots...",
+    "selectDoctorAndDate": "Select a doctor and a date",
+    "doctorNotWorking": "The doctor does not work that day",
+    "noSlotsAvailable": "No available time slots",
+    "statusLabel": "Status",
+    "cancel": "Cancel",
+    "createAppointment": "Create Appointment",
+    "updateAppointment": "Update Appointment",
+    "errors": {
+      "multipleSpaces": "Multiple spaces are not allowed",
+      "invalidChars": "Only letters, single spaces, apostrophes, and hyphens are allowed"
+    }
+  },
+  "patient": {
+    "title": "Patient Information",
+    "todaysAppointments": "Today's Appointments",
+    "loadingAppointments": "Loading appointments...",
+    "noAppointmentsToday": "No appointments scheduled for today",
+    "personalInformation": "Personal Information",
+    "dateOfBirth": "Date of Birth",
+    "notSpecified": "Not specified",
+    "phone": "Phone",
+    "notProvided": "Not provided",
+    "email": "Email",
+    "address": "Address",
+    "medicalInformation": "Medical Information",
+    "chronicDiseases": "Chronic Diseases",
+    "none": "None",
+    "currentTreatments": "Current Treatments",
+    "allergies": "Allergies",
+    "drPrefix": "Dr."
+  },
+  "billing": {
+    "title": "Billing",
+    "newInvoice": "New Invoice",
+    "recentInvoices": "Recent Invoices",
+    "filters": {
+      "all": "All",
+      "paid": "Paid",
+      "pending": "Pending",
+      "overdue": "Overdue"
+    },
+    "table": {
+      "invoiceDetails": "Invoice Details",
+      "service": "Service",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "unknownPatient": "Unknown Patient",
+    "view": "View",
+    "pay": "Pay",
+    "downloadPdf": "Download PDF",
+    "delete": "Delete",
+    "viewDetailsTitle": "View details",
+    "deleteDialog": {
+      "title": "Delete Invoice",
+      "message": "Are you sure you want to delete this invoice? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "payment": {
+    "chooseMethod": "Choose Payment Method",
+    "amountToPay": "Amount to pay:",
+    "payWithPaypal": "Pay securely with PayPal",
+    "payWithStripe": "Pay with credit/debit card"
+  },
+  "invoiceForm": {
+    "viewTitle": "Invoice Details",
+    "editTitle": "Edit Invoice",
+    "createTitle": "Create New Invoice",
+    "patientLabel": "Patient",
+    "selectPatient": "Select a patient",
+    "unknownPatient": "Unknown Patient",
+    "dateLabel": "Date",
+    "invoiceNumberLabel": "Invoice Number",
+    "serviceLabel": "Service",
+    "servicePlaceholder": "Medical service description",
+    "amountLabel": "Amount (€)",
+    "statusLabel": "Status",
+    "close": "Close",
+    "cancel": "Cancel",
+    "updateInvoice": "Update Invoice",
+    "createInvoice": "Create Invoice",
+    "errors": {
+      "multipleSpaces": "Multiple spaces are not allowed",
+      "invalidChars": "Only letters, single spaces, apostrophes, and hyphens are allowed"
+    }
+  }
+}

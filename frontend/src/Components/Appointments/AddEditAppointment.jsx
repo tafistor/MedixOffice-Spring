@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { patients, doctors, workSchedules, appointments, secretarySpecialties } from '../../services/api';
 import { visitTypesWithAmounts } from '../../data/visitTypesWithAmounts';
 import './AddEditAppointment.css';
 
 function AddEditAppointment({ appointment, onClose }) {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [selectedDoctor, setSelectedDoctor] = useState(appointment?.doctorId || null);
     const [selectedDoctorSpecialty, setSelectedDoctorSpecialty] = useState(appointment?.Doctor?.specialization || '');
@@ -39,7 +41,7 @@ function AddEditAppointment({ appointment, onClose }) {
         if (value.includes('  ')) {
             setFieldErrors(prev => ({
                 ...prev,
-                [fieldName]: 'Multiple spaces are not allowed'
+                [fieldName]: t('appointmentForm.errors.multipleSpaces')
             }));
             return false;
         }
@@ -50,7 +52,7 @@ function AddEditAppointment({ appointment, onClose }) {
         if (value && !validPattern.test(value)) {
             setFieldErrors(prev => ({
                 ...prev,
-                [fieldName]: 'Only letters, single spaces, apostrophes, and hyphens are allowed'
+                [fieldName]: t('appointmentForm.errors.invalidChars')
             }));
             return false;
         }
@@ -74,7 +76,7 @@ function AddEditAppointment({ appointment, onClose }) {
         if (value.includes('  ')) {
             setFieldErrors(prev => ({
                 ...prev,
-                [fieldName]: 'Multiple spaces are not allowed'
+                [fieldName]: t('appointmentForm.errors.multipleSpaces')
             }));
             return;
         }
@@ -90,7 +92,7 @@ function AddEditAppointment({ appointment, onClose }) {
         if (value && !validPattern.test(value)) {
             setFieldErrors(prev => ({
                 ...prev,
-                [fieldName]: 'Only letters, single spaces, apostrophes, and hyphens are allowed'
+                [fieldName]: t('appointmentForm.errors.invalidChars')
             }));
             return;
         }
@@ -421,28 +423,28 @@ function AddEditAppointment({ appointment, onClose }) {
     
       const renderTimeSlots = () => {
         if (isLoadingSlots) {
-          return <div className="loading-slots">Loading available time slots...</div>;
+          return <div className="loading-slots">{t('appointmentForm.loadingSlots')}</div>;
         }
-    
+
         if (!selectedDoctor || !date) {
-          return <div className="no-slots-message">Select a doctor and a date</div>;
+          return <div className="no-slots-message">{t('appointmentForm.selectDoctorAndDate')}</div>;
         }
-    
+
         if (doctorSchedules.length === 0) {
-          return <div className="no-slots-message">The doctor does not work that day</div>;
+          return <div className="no-slots-message">{t('appointmentForm.doctorNotWorking')}</div>;
         }
-    
+
         if (availableTimeSlots.length === 0) {
-          return <div className="no-slots-message">No available time slots</div>;
+          return <div className="no-slots-message">{t('appointmentForm.noSlotsAvailable')}</div>;
         }
-    
+
         return (
           <select
             value={time}
             onChange={(e) => setTime(e.target.value)}
             className="form-select"
           >
-            <option value="">Select a time slot</option>
+            <option value="">{t('appointmentForm.selectTimeSlot')}</option>
             {availableTimeSlots.map((slot, index) => (
               <option key={index} value={slot}>
                 {slot}
@@ -457,7 +459,7 @@ function AddEditAppointment({ appointment, onClose }) {
           <div className="modal-content">
             <div className="modal-header">
               <h2 className="modal-title">
-                {appointment ? 'Edit Appointment' : 'New Appointment'}
+                {appointment ? t('appointmentForm.editTitle') : t('appointmentForm.newTitle')}
               </h2>
               <button onClick={onClose} className="close-button">
                 <X className="close-icon" />
@@ -467,10 +469,10 @@ function AddEditAppointment({ appointment, onClose }) {
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-fields">
                 <div className="form-group" ref={patientRef}>
-                  <label className="form-label">Patient</label>
+                  <label className="form-label">{t('appointmentForm.patientLabel')}</label>
                   <input
                     type="text"
-                    placeholder="Search a patient..."
+                    placeholder={t('appointmentForm.patientSearchPlaceholder')}
                     value={patientFilter}
                     onChange={handlePatientFilterChange}
                     onBlur={handlePatientFilterBlur}
@@ -501,10 +503,10 @@ function AddEditAppointment({ appointment, onClose }) {
                 </div>
     
                 <div className="form-group" ref={doctorRef}>
-                  <label className="form-label">Doctor</label>
+                  <label className="form-label">{t('appointmentForm.doctorLabel')}</label>
                   <input
                     type="text"
-                    placeholder="Search by name or specialty..."
+                    placeholder={t('appointmentForm.doctorSearchPlaceholder')}
                     value={doctorFilter}
                     onChange={handleDoctorFilterChange}
                     onBlur={handleDoctorFilterBlur}
@@ -518,7 +520,7 @@ function AddEditAppointment({ appointment, onClose }) {
                     <div className="dropdown-list">
                       {filteredDoctors.length === 0 ? (
                         <div className="dropdown-item disabled">
-                          No doctors found
+                          {t('appointmentForm.noDoctorsFound')}
                         </div>
                       ) : (
                         filteredDoctors.map((doctor) => (
@@ -544,17 +546,17 @@ function AddEditAppointment({ appointment, onClose }) {
                 </div>
     
                 <div className="form-group">
-                  <label className="form-label">Visit Type</label>
+                  <label className="form-label">{t('appointmentForm.visitTypeLabel')}</label>
                   <select
                     value={visitType}
                     onChange={(e) => handleVisitTypeChange(e.target.value)}
                     disabled={!selectedDoctor}
                     className="form-select"
                   >
-                    <option value="">Select a visit type</option>
+                    <option value="">{t('appointmentForm.selectVisitType')}</option>
                     {availableVisitTypes.map((type, index) => (
                       <option key={index} value={type}>
-                        {type}
+                        {type === 'Other' ? t('appointmentForm.other') : type}
                       </option>
                     ))}
                   </select>
@@ -565,7 +567,7 @@ function AddEditAppointment({ appointment, onClose }) {
                         value={customVisitType}
                         onChange={handleCustomVisitTypeChange}
                         onBlur={handleCustomVisitTypeBlur}
-                        placeholder="Enter custom visit type..."
+                        placeholder={t('appointmentForm.customVisitTypePlaceholder')}
                         className="form-input mt-2"
                       />
                       {fieldErrors.customVisitType && (
@@ -576,7 +578,7 @@ function AddEditAppointment({ appointment, onClose }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Amount</label>
+                  <label className="form-label">{t('appointmentForm.amountLabel')}</label>
                   <div className="amount-display">
                     <input
                       type="number"
@@ -592,7 +594,7 @@ function AddEditAppointment({ appointment, onClose }) {
     
                 <div className="form-grid">
                   <div className="form-group">
-                    <label className="form-label">Date</label>
+                    <label className="form-label">{t('appointmentForm.dateLabel')}</label>
                     <input
                       type="date"
                       value={date}
@@ -602,25 +604,25 @@ function AddEditAppointment({ appointment, onClose }) {
                       min={new Date().toISOString().split('T')[0]}
                     />
                   </div>
-    
+
                   <div className="form-group">
-                    <label className="form-label">Time </label>
+                    <label className="form-label">{t('appointmentForm.timeLabel')}</label>
                     {renderTimeSlots()}
                   </div>
                 </div>
-    
+
                 {user.role === 'secretary' && (
                   <div className="form-group">
-                    <label className="form-label">Status</label>
+                    <label className="form-label">{t('appointmentForm.statusLabel')}</label>
                     <select
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
                       className="form-select"
                     >
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option value="pending">{t('common.status.pending')}</option>
+                      <option value="confirmed">{t('common.status.confirmed')}</option>
+                      <option value="completed">{t('common.status.completed')}</option>
+                      <option value="cancelled">{t('common.status.cancelled')}</option>
                     </select>
                   </div>
                 )}
@@ -632,14 +634,14 @@ function AddEditAppointment({ appointment, onClose }) {
                   onClick={onClose}
                   className="button button-secondary"
                 >
-                  Cancel
+                  {t('appointmentForm.cancel')}
                 </button>
                 <button
                   type="submit"
                   className="button button-primary"
                   disabled={!selectedDoctor || !date || !time || (!visitType || (visitType === 'Other' && !customVisitType))}
                 >
-                  {appointment ? 'Update' : 'Create'}  Appointment
+                  {appointment ? t('appointmentForm.updateAppointment') : t('appointmentForm.createAppointment')}
                 </button>
               </div>
             </form>

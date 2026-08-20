@@ -21,6 +21,12 @@
   gap: 16px;
 }
 
+.billing-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .header-title {
   font-size: 28px;
   font-weight: 700;
