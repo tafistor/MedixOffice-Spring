@@ -59,6 +59,22 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN.value()));
     }
 
+    @ExceptionHandler(ResetCodeExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleResetCodeExpired(ResetCodeExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.GONE)
+                .body(new ErrorResponse(ex.getMessage(), HttpStatus.GONE.value()));
+    }
+
+    /** Custom body (not ErrorResponse) - only includes remainingAttempts/maxAttemptsReached when the exception actually carries them, matching the two distinct 429 cases Node has. */
+    @ExceptionHandler(VerifyCodeFailedException.class)
+    public ResponseEntity<Map<String, Object>> handleVerifyCodeFailed(VerifyCodeFailedException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("message", ex.getMessage());
+        if (ex.getRemainingAttempts() != null) body.put("remainingAttempts", ex.getRemainingAttempts());
+        if (ex.getMaxAttemptsReached() != null) body.put("maxAttemptsReached", ex.getMaxAttemptsReached());
+        return ResponseEntity.status(ex.getStatus()).body(body);
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAuthorizationDenied(AuthorizationDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
