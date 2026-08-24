@@ -1,5 +1,6 @@
 package com.medixoffice.backend.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.medixoffice.backend.dto.consultation.ConsultationCreateRequest;
 import com.medixoffice.backend.dto.consultation.ConsultationResponse;
 import com.medixoffice.backend.dto.consultation.ConsultationUpdateRequest;
@@ -53,7 +54,7 @@ public class ConsultationService {
 
         Consultation consultation = new Consultation(patient, doctor, request.date(), request.time(), request.type());
         consultation.setNotes(request.notes());
-        consultation.setVitals(request.vitals());
+        consultation.setVitals(vitalsToJson(request.vitals()));
         consultation = consultationRepository.save(consultation);
 
         LocalDate today = LocalDate.now();
@@ -104,7 +105,7 @@ public class ConsultationService {
         if (request.type() != null) consultation.setType(request.type());
         if (request.status() != null) consultation.setStatus(request.status());
         if (request.notes() != null) consultation.setNotes(request.notes());
-        if (request.vitals() != null) consultation.setVitals(request.vitals());
+        if (request.vitals() != null) consultation.setVitals(vitalsToJson(request.vitals()));
 
         return toResponse(consultation);
     }
@@ -114,6 +115,13 @@ public class ConsultationService {
         Consultation consultation = consultationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Consultation not found"));
         consultationRepository.delete(consultation);
+    }
+
+    private String vitalsToJson(JsonNode vitals) {
+        if (vitals == null || vitals.isNull()) {
+            return null;
+        }
+        return vitals.toString();
     }
 
     private void createInvoiceForAppointment(Patient patient, Appointment appointment) {

@@ -1,5 +1,6 @@
 package com.medixoffice.backend.dto.consultation;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.medixoffice.backend.entity.ConsultationStatus;
 import com.medixoffice.backend.entity.ConsultationType;
 
@@ -12,6 +13,6 @@ public record ConsultationUpdateRequest(
         ConsultationType type,
         ConsultationStatus status,
         String notes,
-        String vitals
+        JsonNode vitals
 ) {
 }
