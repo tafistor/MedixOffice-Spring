@@ -58,6 +58,13 @@ function AddEditMedicalRecord({ isOpen, onClose, onSubmit, record = null, curren
           setSelectedPatient(record.Patient);
           setPatientError('');
         }
+
+        // The dialog stays mounted between opens (isOpen just toggles), so
+        // without this, raw File objects picked in a previous session (create,
+        // or an earlier edit) would still be sitting in state and get
+        // re-uploaded alongside whatever's newly picked this time.
+        setLabResultFiles([]);
+        setAttachmentFiles([]);
       } else {
         setFormData({
           ...initialFormState,
