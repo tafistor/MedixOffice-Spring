@@ -144,6 +144,7 @@
     "downloadPdf": "Télécharger PDF",
     "delete": "Supprimer",
     "viewDetailsTitle": "Voir les détails",
+    "paymentError": "Le paiement a échoué. Veuillez réessayer ou utiliser un autre moyen de paiement.",
     "deleteDialog": {
       "title": "Supprimer la facture",
       "message": "Êtes-vous sûr de vouloir supprimer cette facture ? Cette action est irréversible.",

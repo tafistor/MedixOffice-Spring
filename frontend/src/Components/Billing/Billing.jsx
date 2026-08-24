@@ -23,6 +23,7 @@ function Billing() {
   const [currentPatient, setCurrentPatient] = useState(null);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [invoiceToDelete, setInvoiceToDelete] = useState(null);
+  const [paymentError, setPaymentError] = useState(null);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -188,10 +189,12 @@ function Billing() {
   
   const handlePayInvoice = async (invoice) => {
     setInvoiceForPayment(invoice);
+    setPaymentError(null);
     setIsPaymentDialogOpen(true);
   };
 
   const handlePaymentSelect = async (paymentMethod) => {
+    setPaymentError(null);
     try {
       let response;
       if (paymentMethod.toLowerCase() === 'paypal') {
@@ -201,12 +204,12 @@ function Billing() {
       } else {
         return;
       }
-      
+
       if (response && response.data && response.data.url) {
         window.location.href = response.data.url;
-      } 
+      }
     } catch (error) {
-      //erreur de paiement
+      setPaymentError(error.response?.data?.message || t('billing.paymentError'));
     }
   };
 
@@ -245,6 +248,15 @@ const handleDownloadInvoice = async (invoice) => {
           )}
         </div>
       </div>
+
+      {paymentError && (
+        <div className="error-message" role="alert">
+          {paymentError}
+          <button type="button" onClick={() => setPaymentError(null)} className="close-button">
+            ×
+          </button>
+        </div>
+      )}
 
       <div className="invoices-section">
         <div className="section-header">

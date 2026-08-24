@@ -4,6 +4,30 @@
   background-color: #f8fafc;
 }
 
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.error-message .close-button {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
 .billing-header {
   display: flex;
   justify-content: space-between;
