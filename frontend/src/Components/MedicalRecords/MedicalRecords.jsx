@@ -185,14 +185,14 @@ function MedicalRecords() {
       submitFormData.append('prescription', formData.prescription);
       submitFormData.append('status', formData.status);
       submitFormData.append('isConfidential', formData.isConfidential);
-      
+
       // Ajouter les fichiers lab results
       if (formData.labResultFiles && formData.labResultFiles.length > 0) {
         formData.labResultFiles.forEach(file => {
           submitFormData.append('labResults', file);
         });
       }
-      
+
       // Ajouter les fichiers attachments
       if (formData.attachmentFiles && formData.attachmentFiles.length > 0) {
         formData.attachmentFiles.forEach(file => {
@@ -201,6 +201,14 @@ function MedicalRecords() {
       }
 
       if (selectedRecord) {
+        // Existing files the user kept (already excludes anything removed via
+        // the Trash button) - lets the backend do a real merge instead of
+        // wiping every stored file whenever any new one is uploaded.
+        const keptLabResults = (formData.labResults || []).filter(f => f.path);
+        const keptAttachments = (formData.attachments || []).filter(f => f.path);
+        submitFormData.append('existingLabResults', JSON.stringify(keptLabResults));
+        submitFormData.append('existingAttachments', JSON.stringify(keptAttachments));
+
         await medicalRecords.update(selectedRecord.id, submitFormData);
       } else {
         await medicalRecords.create(submitFormData);

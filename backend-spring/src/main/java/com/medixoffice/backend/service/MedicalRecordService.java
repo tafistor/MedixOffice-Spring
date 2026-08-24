@@ -26,11 +26,13 @@ import com.medixoffice.backend.repository.MedicalRecordRepository;
 import com.medixoffice.backend.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -109,13 +111,13 @@ public class MedicalRecordService {
             record.setLastModifiedBy(modifier);
         }
 
-        if (request.labResults() != null && !request.labResults().isEmpty()) {
-            fileStorageService.delete(fromJson(record.getLabResults()));
-            record.setLabResults(toJson(fileStorageService.store(record.getPatient().getId(), request.labResults())));
+        if (request.existingLabResults() != null || (request.labResults() != null && !request.labResults().isEmpty())) {
+            record.setLabResults(toJson(mergeFiles(record.getPatient().getId(), record.getLabResults(),
+                    request.existingLabResults(), request.labResults())));
         }
-        if (request.attachments() != null && !request.attachments().isEmpty()) {
-            fileStorageService.delete(fromJson(record.getAttachments()));
-            record.setAttachments(toJson(fileStorageService.store(record.getPatient().getId(), request.attachments())));
+        if (request.existingAttachments() != null || (request.attachments() != null && !request.attachments().isEmpty())) {
+            record.setAttachments(toJson(mergeFiles(record.getPatient().getId(), record.getAttachments(),
+                    request.existingAttachments(), request.attachments())));
         }
 
         return toResponse(record);
@@ -245,6 +247,31 @@ public class MedicalRecordService {
         }
 
         return baos.toByteArray();
+    }
+
+    /**
+     * Merges what the client wants to keep of the current stored files with
+     * whatever new files it just uploaded, deleting only the ones dropped
+     * from "keep" - a real diff instead of the old delete-everything-then-
+     * store-only-the-new-batch behavior, which silently discarded any
+     * attachment the caller didn't happen to re-upload in the same request.
+     */
+    private List<StoredFile> mergeFiles(Integer patientId, String currentJson, String keepJson, List<MultipartFile> newFiles) {
+        List<StoredFile> current = fromJson(currentJson);
+        List<StoredFile> kept = keepJson != null ? fromJson(keepJson) : current;
+
+        List<StoredFile> removed = current.stream()
+                .filter(f -> kept.stream().noneMatch(k -> k.path().equals(f.path())))
+                .toList();
+        fileStorageService.delete(removed);
+
+        List<StoredFile> stored = (newFiles != null && !newFiles.isEmpty())
+                ? fileStorageService.store(patientId, newFiles)
+                : List.of();
+
+        List<StoredFile> merged = new ArrayList<>(kept);
+        merged.addAll(stored);
+        return merged;
     }
 
     private String toJson(Object value) {

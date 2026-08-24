@@ -72,9 +72,11 @@ public class MedicalRecordController {
             @RequestParam(required = false) Boolean isConfidential,
             @RequestParam(required = false) Integer doctorId,
             @RequestParam(value = "labResults", required = false) List<MultipartFile> labResults,
-            @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) {
+            @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments,
+            @RequestParam(required = false) String existingLabResults,
+            @RequestParam(required = false) String existingAttachments) {
         var request = new MedicalRecordUpdateRequest(recordType, diagnosis, treatment, prescription, status,
-                isConfidential, doctorId, labResults, attachments);
+                isConfidential, doctorId, labResults, attachments, existingLabResults, existingAttachments);
         return medicalRecordService.updateMedicalRecord(id, request);
     }
 
