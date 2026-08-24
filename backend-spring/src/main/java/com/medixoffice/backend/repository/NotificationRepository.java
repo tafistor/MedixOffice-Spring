@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** Explicit @Query throughout - isRead's "is"-prefixed field name is ambiguous for Spring Data's derived-method parsing. */
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
     @Query("SELECT n FROM Notification n WHERE n.user.id = :userId AND n.isRead = false ORDER BY n.createdAt DESC")

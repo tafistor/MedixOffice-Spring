@@ -15,13 +15,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * No timestamps - the live invoices table has neither createdAt/updatedAt.
- * consultation is nullable (ON DELETE SET NULL) - Sequelize never declared
- * this as a formal association (the Node controller fetches it manually),
- * but that's an old-ORM implementation detail, not a reason to skip a clean
- * relationship here.
- */
+
 @Entity
 @Table(name = "invoices")
 public class Invoice {

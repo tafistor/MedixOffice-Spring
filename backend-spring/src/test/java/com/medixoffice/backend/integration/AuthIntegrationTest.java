@@ -12,11 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * @Transactional rolls back everything written here (the registered user)
- * once the test method finishes, so this never leaves data behind in the
- * dev database it runs against.
- */
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional

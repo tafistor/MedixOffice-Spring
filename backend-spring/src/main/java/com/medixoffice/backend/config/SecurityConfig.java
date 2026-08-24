@@ -32,12 +32,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Authentication is entirely JWT-based (JwtAuthenticationFilter sets the
-     * SecurityContext directly from the token) - this bean exists only to stop
-     * Spring Boot's UserDetailsServiceAutoConfiguration from generating a
-     * random in-memory "user" account and logging its password on every boot.
-     */
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
@@ -71,11 +66,6 @@ public class SecurityConfig {
                 .exceptionHandling(eh -> eh
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler))
-                // Public routes only - everything else (including /payments/**,
-                // which had zero auth middleware in the Node version) requires a
-                // valid token by default. Per-role restrictions (Node's
-                // authorize(...roles)) are enforced with @PreAuthorize once
-                // controllers exist.
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/password-reset/**").permitAll()
                         .anyRequest().authenticated())

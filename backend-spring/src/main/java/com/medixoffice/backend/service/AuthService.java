@@ -46,12 +46,7 @@ public class AuthService {
         return toAuthResponse(user);
     }
 
-    /**
-     * @Transactional so failed-attempt/lockout state written to `user` before a
-     * throw still persists (see PasswordResetService.verifyResetCode for the
-     * same pattern) - without noRollbackFor, Spring would roll it back along
-     * with everything else in the transaction.
-     */
+    
     @Transactional(noRollbackFor = {InvalidCredentialsException.class, AccountLockedException.class})
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
@@ -71,9 +66,7 @@ public class AuthService {
             throw new InvalidCredentialsException("Invalid password");
         }
 
-        // Checked after the password, not before: a wrong-password attempt against a
-        // deactivated account should still just get "invalid password", not a hint
-        // that the account exists and is deactivated.
+        
         if (!user.isActive()) {
             throw new AccountDeactivatedException("This account has been deactivated");
         }

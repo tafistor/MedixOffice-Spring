@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-/** One row per successful mutating (non-GET) request - who did what, when. */
 @Entity
 @Table(name = "activitylogs")
 public class ActivityLog {

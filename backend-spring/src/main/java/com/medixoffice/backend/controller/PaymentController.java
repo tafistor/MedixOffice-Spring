@@ -17,12 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Had zero auth middleware in the Node version - now covered by the default
- * `.anyRequest().authenticated()` rule in SecurityConfig (no permitAll entry
- * here), plus role restrictions matching who can already interact with
- * invoices (admin/secretary/patient - doctors don't handle billing).
- */
+
 @RestController
 @RequestMapping("/payments")
 @PreAuthorize("hasAnyRole('admin', 'secretary', 'patient')")
@@ -50,11 +45,7 @@ public class PaymentController {
         return new PaymentUrlResponse(url);
     }
 
-    /**
-     * Node never had this endpoint - the frontend marked invoices "paid" just by
-     * trusting the return_url's payment_success param. This actually captures the
-     * order with PayPal first and only marks the invoice paid if that succeeds.
-     */
+
     @PostMapping("/paypal/capture")
     public MessageResponse capturePaypalPayment(@Valid @RequestBody CapturePaypalPaymentRequest request) {
         boolean captured = payPalService.capturePayment(request.orderId());

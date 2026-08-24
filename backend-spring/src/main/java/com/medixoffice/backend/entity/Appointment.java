@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/** time is a plain string column (e.g. "09:00"), not a SQL TIME type - matches the live schema exactly. */
 @Entity
 @Table(name = "appointments")
 public class Appointment {

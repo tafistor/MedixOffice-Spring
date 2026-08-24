@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
-/** No timestamps - the live patients table has neither createdAt/updatedAt nor any snake_case equivalent. */
 @Entity
 @Table(name = "patients")
 public class Patient {

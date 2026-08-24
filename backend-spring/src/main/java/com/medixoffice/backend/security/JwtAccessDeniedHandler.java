@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-/** Mirrors Node's authorize(...roles) middleware: 403 with 'Not authorized to access this resource'. */
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 

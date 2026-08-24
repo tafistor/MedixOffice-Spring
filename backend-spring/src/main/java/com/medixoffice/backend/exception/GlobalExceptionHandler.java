@@ -13,17 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * 401s (no/invalid/expired token) are always handled by
- * JwtAuthenticationEntryPoint in the security filter chain - that check runs
- * before DispatcherServlet, so those exceptions never reach here. 403s are
- * split: a URL-pattern-level authorizeHttpRequests denial is also filter-chain
- * territory (JwtAccessDeniedHandler), but a @PreAuthorize denial happens
- * *inside* DispatcherServlet's handling of the request, where this
- * @RestControllerAdvice's catch-all intercepts it first - hence the explicit
- * AuthorizationDeniedException handler below, kept in sync with
- * JwtAccessDeniedHandler's message.
- */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -65,7 +55,6 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS.value()));
     }
 
-    /** ex.getMessage() is always a safe, generic string here - the real provider error (which can contain sensitive detail) is logged server-side only via the cause. */
     @ExceptionHandler(PaymentException.class)
     public ResponseEntity<ErrorResponse> handlePaymentException(PaymentException ex) {
         log.error("Payment provider error", ex);
@@ -85,7 +74,6 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), HttpStatus.GONE.value()));
     }
 
-    /** Custom body (not ErrorResponse) - only includes remainingAttempts/maxAttemptsReached when the exception actually carries them, matching the two distinct 429 cases Node has. */
     @ExceptionHandler(VerifyCodeFailedException.class)
     public ResponseEntity<Map<String, Object>> handleVerifyCodeFailed(VerifyCodeFailedException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -112,7 +100,6 @@ public class GlobalExceptionHandler {
                         java.time.Instant.now(), fieldErrors));
     }
 
-    /** Malformed JSON, or a value that doesn't match a target type (e.g. an unknown enum constant) - a client mistake, not a server error. */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleUnreadableBody(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

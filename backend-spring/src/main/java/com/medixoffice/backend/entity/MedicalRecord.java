@@ -17,12 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-/**
- * prescription/labResults/attachments are stored as raw JSON text (LONGTEXT
- * columns) - structured access happens at the DTO/service layer. doctor is
- * the treating physician; lastModifiedBy is a second, independent FK to
- * doctors (Sequelize's aliased "modifier" association).
- */
+
 @Entity
 @Table(name = "medicalrecords")
 public class MedicalRecord {

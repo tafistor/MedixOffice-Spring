@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-/** No timestamps - the live doctors table has neither createdAt/updatedAt nor any snake_case equivalent. */
 @Entity
 @Table(name = "doctors")
 public class Doctor {

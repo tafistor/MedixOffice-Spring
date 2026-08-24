@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/** vitals is a JsonNode, not a String: the frontend sends it as a nested {bloodPressure, temperature, heartRate} object, not a JSON-encoded string. */
+
 public record ConsultationCreateRequest(
         @NotNull Integer patientId,
         @NotNull Integer doctorId,

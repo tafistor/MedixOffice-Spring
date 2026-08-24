@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-/** Mirrors Node's protect middleware 401 bodies: 'Not authorized, no token' / 'Invalid token' / 'Token expired'. */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

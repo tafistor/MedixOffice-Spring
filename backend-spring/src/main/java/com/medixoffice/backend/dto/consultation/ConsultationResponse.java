@@ -12,8 +12,6 @@ import java.time.LocalTime;
 
 public record ConsultationResponse(
         Integer id,
-        // See InvoiceResponse for why these flat FK fields are needed: Consultations.jsx
-        // filters by consultation.patientId / .doctorId directly.
         Integer patientId,
         Integer doctorId,
         LocalDate date,

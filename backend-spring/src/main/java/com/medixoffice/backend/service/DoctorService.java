@@ -126,7 +126,6 @@ public class DoctorService {
         return toResponse(newDoctor);
     }
 
-    /** Doctors don't have soft-delete columns (that scope was User/Patient only) - matches Node's hard delete exactly. */
     @Transactional
     public void deleteDoctor(Integer id) {
         Doctor doctor = doctorRepository.findById(id)

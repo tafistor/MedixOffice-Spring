@@ -6,13 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-/**
- * Bean Validation replaces the express-validator chains that Node wired up but
- * never actually checked (validationResult was never called) - Node's own
- * intended rule was just a 6-char minimum. Strengthened here to require a
- * letter and a digit too, since a bare 6-char minimum doesn't demonstrate
- * real password strength for the security section of the brief.
- */
+
 public record RegisterRequest(
         @NotBlank(message = "Le prénom est requis") String firstName,
         @NotBlank(message = "Le nom est requis") String lastName,

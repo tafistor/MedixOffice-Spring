@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/** PDF/ZIP export are kept functional but plain - no attempt to match the original's colored section headers. */
 @Service
 public class MedicalRecordService {
 
@@ -249,13 +248,7 @@ public class MedicalRecordService {
         return baos.toByteArray();
     }
 
-    /**
-     * Merges what the client wants to keep of the current stored files with
-     * whatever new files it just uploaded, deleting only the ones dropped
-     * from "keep" - a real diff instead of the old delete-everything-then-
-     * store-only-the-new-batch behavior, which silently discarded any
-     * attachment the caller didn't happen to re-upload in the same request.
-     */
+    
     private List<StoredFile> mergeFiles(Integer patientId, String currentJson, String keepJson, List<MultipartFile> newFiles) {
         List<StoredFile> current = fromJson(currentJson);
         List<StoredFile> kept = keepJson != null ? fromJson(keepJson) : current;

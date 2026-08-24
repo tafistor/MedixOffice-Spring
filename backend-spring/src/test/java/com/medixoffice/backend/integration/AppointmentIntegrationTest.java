@@ -13,13 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Runs against the seeded demo data (patient1@medixoffice.demo / doctor1,
- * Cardiology, id 6) already present in the dev database - a free slot on
- * that doctor's real WorkSchedule is picked so this doesn't collide with
- * anything else. @Transactional rolls the created appointment back after
- * the test.
- */
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional

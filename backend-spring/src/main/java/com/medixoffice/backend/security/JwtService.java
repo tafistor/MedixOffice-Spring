@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 
-/** Generates and parses the {id, role} JWTs, mirroring the Node backend's jwt.sign({id, role}, secret, {expiresIn}). */
 @Component
 public class JwtService {
 

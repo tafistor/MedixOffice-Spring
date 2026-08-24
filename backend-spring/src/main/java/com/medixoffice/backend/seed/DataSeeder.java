@@ -39,17 +39,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/**
- * Seeds a small, realistic demo dataset - gated behind app.seed-data.enabled
- * (default false) so it only ever runs when explicitly requested. Idempotent:
- * skips entirely if the demo admin account already exists, so re-running the
- * app doesn't create duplicates.
- *
- * Deliberately includes one patient (Paul Ancien) who is given an invoice
- * *before* being soft-deleted, so the "unsubscribe a member who already has
- * transactions" defense scenario is visible immediately without needing to
- * trigger it live - the row and its history are already there to inspect.
- */
+
 @Component
 @Profile("!test")
 public class DataSeeder implements CommandLineRunner {
@@ -106,11 +96,7 @@ public class DataSeeder implements CommandLineRunner {
         User admin = saveUser("Ada", "Min", "admin@medixoffice.demo", Role.admin);
 
         User secretaryUser = saveUser("Sophie", "Secretaire", "secretary@medixoffice.demo", Role.secretary);
-        // Must match frontend/src/data/specializationsList.js exactly - it's the
-        // canonical list AddEditDoctor.jsx uses, and visitTypesWithAmounts.js keys
-        // off these same English names to look up predefined visit types per
-        // specialty. French labels here silently produced zero predefined visit
-        // types for every seeded doctor (dropdown fell back to "Other" only).
+    
         secretarySpecialtyRepository.save(new SecretarySpecialty(secretaryUser, "Cardiology"));
         secretarySpecialtyRepository.save(new SecretarySpecialty(secretaryUser, "General Medicine"));
 
@@ -169,8 +155,7 @@ public class DataSeeder implements CommandLineRunner {
         invoice1.setStatus(InvoiceStatus.Paid);
         invoiceRepository.save(invoice1);
 
-        // patient3's transaction history, created before deactivation - this is the
-        // defense scenario: the invoice stays intact and valid after soft delete.
+      
         Invoice invoice2 = new Invoice(patient3, monday.minusDays(14), new BigDecimal("60.00"), "Consultation initiale", "INV-SEED-0002");
         invoice2.setStatus(InvoiceStatus.Paid);
         invoiceRepository.save(invoice2);
@@ -180,7 +165,7 @@ public class DataSeeder implements CommandLineRunner {
                 NotificationType.appointment));
         notificationRepository.save(new Notification(admin, "Bienvenue sur MedixOffice.", NotificationType.general));
 
-        // Demonstrates soft delete on a patient who already has a transaction (invoice2 above).
+      
         patient3.softDelete();
         patient3User.softDelete();
         patientRepository.save(patient3);

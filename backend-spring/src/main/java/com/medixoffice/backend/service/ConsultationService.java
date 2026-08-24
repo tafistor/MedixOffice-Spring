@@ -44,7 +44,6 @@ public class ConsultationService {
         this.invoiceRepository = invoiceRepository;
     }
 
-    /** Auto-creates a Pending invoice if there's a matching same-day appointment - mirrors Node's behavior exactly, including not checking that appointment's status. */
     @Transactional
     public ConsultationResponse createConsultation(ConsultationCreateRequest request) {
         Patient patient = patientRepository.findById(request.patientId())

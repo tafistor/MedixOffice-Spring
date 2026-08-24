@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** Mirrors Node's uploadMiddleware.js: one subfolder per patient, a unique suffix per stored filename, an allowed-type check. */
 @Service
 public class FileStorageService {
 
@@ -53,9 +52,7 @@ public class FileStorageService {
                 throw new UnsupportedFileTypeException("Type de fichier non autorisé: " + file.getContentType());
             }
 
-            // Path.getFileName() strips any directory component a client could smuggle in
-            // (e.g. "../../etc/passwd") - without this, Path.resolve() below would happily
-            // write outside patientDir since it doesn't sanitize ".." segments itself.
+          
             String originalName = file.getOriginalFilename() != null
                     ? Path.of(file.getOriginalFilename()).getFileName().toString()
                     : "file";
@@ -85,7 +82,6 @@ public class FileStorageService {
             try {
                 Files.deleteIfExists(Path.of(file.path()));
             } catch (IOException ignored) {
-                // best effort - a missing/locked file shouldn't block the rest of the operation
             }
         }
     }

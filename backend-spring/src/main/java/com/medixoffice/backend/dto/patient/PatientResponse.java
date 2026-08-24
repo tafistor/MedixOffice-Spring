@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/** @JsonProperty("User") reproduces Sequelize's include key exactly - the frontend reads patient.User.firstName etc. */
 public record PatientResponse(
         Integer id,
         Integer userId,

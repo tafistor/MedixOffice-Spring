@@ -15,7 +15,6 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/** No timestamps - the live workschedules table has neither createdAt/updatedAt. */
 @Entity
 @Table(name = "workschedules")
 public class WorkSchedule {

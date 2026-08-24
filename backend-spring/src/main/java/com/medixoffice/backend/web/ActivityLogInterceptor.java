@@ -12,12 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Set;
 
-/**
- * Minimal audit trail: logs who did what, when, for every successful
- * mutating request. Skips GET/OPTIONS (nothing to audit), anonymous requests
- * (login/register/forgot-password have no user yet), and failed requests
- * (an authorization/validation error isn't a completed action).
- */
+
 @Component
 public class ActivityLogInterceptor implements HandlerInterceptor {
 

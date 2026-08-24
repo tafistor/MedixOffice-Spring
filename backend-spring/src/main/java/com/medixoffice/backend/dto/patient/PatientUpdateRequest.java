@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
-/** All fields optional - matches Node's partial-update semantics (only provided fields change). */
 public record PatientUpdateRequest(
         String firstName,
         String lastName,

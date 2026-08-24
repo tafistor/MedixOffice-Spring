@@ -36,14 +36,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Two Node niceties deliberately dropped for time: marking related secretary
- * notifications as read on confirm, and deleting related notifications on
- * cancel. Both matched notifications by fuzzy message-text search (patient
- * name + doctor name + date + time embedded in the string) rather than a real
- * foreign key - fragile in the original, and not core functionality; skipping
- * them just means a stale notification can be marked read manually instead.
- */
+
 @Service
 public class AppointmentService {
 
@@ -129,8 +122,7 @@ public class AppointmentService {
 
         boolean dateOrTimeChanged = !newDate.equals(appointment.getDate()) || !newTime.equals(appointment.getTime());
         if (dateOrTimeChanged) {
-            // Safe without excluding this appointment's own id: dateOrTimeChanged being true
-            // means the appointment's current (date, time) can't equal the new pair being checked.
+           
             checkScheduleAvailability(newDoctorId, newDate, newTime);
             checkNoConflict(newDoctorId, newDate, newTime);
         }
@@ -187,9 +179,7 @@ public class AppointmentService {
 
     private void checkScheduleAvailability(Integer doctorId, LocalDate date, String time) {
         WorkDay dayOfWeek = toWorkDay(date);
-        // The frontend sends slots as "HH:mm to HH:mm" (and stores that whole
-        // string on the appointment, matching Node) - only the start needs
-        // parsing to check it falls inside a WorkSchedule window.
+        
         String startTime = time.split(" to ")[0];
         LocalTime parsedTime;
         try {

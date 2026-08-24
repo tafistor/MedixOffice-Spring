@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-/** Assembled by the controller from multipart @RequestParams - not bound directly by Spring. */
 public record MedicalRecordCreateRequest(
         Integer patientId,
         Integer doctorId,

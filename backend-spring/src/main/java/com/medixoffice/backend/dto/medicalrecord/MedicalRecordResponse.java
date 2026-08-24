@@ -11,12 +11,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-/** labResults/attachments are returned as real JSON arrays (parsed back from the entity's stored string), not double-encoded strings. */
 public record MedicalRecordResponse(
         Integer id,
-        // See InvoiceResponse for why these flat FK fields are needed: MedicalRecords.jsx
-        // filters by record.patientId / .doctorId, and looks up consultation
-        // details by record.consultationId directly.
         Integer patientId,
         Integer doctorId,
         Integer consultationId,

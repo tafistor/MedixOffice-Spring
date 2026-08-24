@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/** GET /activity-logs is @PreAuthorize("hasRole('admin')") - confirms a patient really gets blocked, not just admins being let in. */
 @SpringBootTest
 @AutoConfigureMockMvc
 class RoleAuthorizationIntegrationTest {

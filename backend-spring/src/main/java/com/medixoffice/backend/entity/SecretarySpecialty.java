@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-/** No timestamps - the live secretaryspecialties table has neither createdAt/updatedAt. */
 @Entity
 @Table(name = "secretaryspecialties",
         uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "specialty"}))

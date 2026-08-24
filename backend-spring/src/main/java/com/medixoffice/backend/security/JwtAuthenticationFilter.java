@@ -17,11 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Re-fetches the user on every request (like Node's protect middleware) so a
- * deleted/deactivated account is rejected immediately rather than waiting out
- * the token's 30-day expiry, instead of trusting the JWT's claims blindly.
- */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 

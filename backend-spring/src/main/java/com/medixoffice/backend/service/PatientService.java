@@ -134,7 +134,6 @@ public class PatientService {
         return toResponse(newPatient);
     }
 
-    /** Soft delete: marks the patient and its linked user inactive instead of removing rows, so existing appointments/invoices/consultations keep working. */
     @Transactional
     public void deletePatient(Integer id) {
         Patient patient = patientRepository.findById(id)

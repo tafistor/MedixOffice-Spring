@@ -15,13 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-/**
- * The one snake_case/timestamps:false-with-a-single-timestamp outlier among
- * the 10 entities: user_id, is_read, created_at (no updated_at at all),
- * everywhere else in the schema is camelCase createdAt/updatedAt or no
- * timestamps. Needs explicit @Column names since PhysicalNamingStrategyStandardImpl
- * preserves field names as-is rather than converting camelCase to snake_case.
- */
+
 @Entity
 @Table(name = "notifications")
 public class Notification {

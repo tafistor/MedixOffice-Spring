@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-/** vitals is stored as raw JSON text (LONGTEXT column) - structured access happens at the DTO/service layer. */
 @Entity
 @Table(name = "consultations")
 public class Consultation {

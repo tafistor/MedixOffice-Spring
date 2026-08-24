@@ -13,11 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-/**
- * Password hashing (bcrypt) and comparison live in the service layer, not
- * here - Node did it via Sequelize beforeCreate/beforeUpdate hooks, but JPA
- * entities shouldn't depend on a Spring-managed PasswordEncoder bean.
- */
+
 @Entity
 @Table(name = "users")
 public class User {

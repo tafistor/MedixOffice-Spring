@@ -15,7 +15,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-/** Calls PayPal's Orders v2 REST API directly via RestClient - no PayPal SDK dependency. */
 @Service
 public class PayPalService {
 
@@ -74,15 +73,7 @@ public class PayPalService {
         }
     }
 
-    /**
-     * intent: CAPTURE on order creation does NOT auto-capture funds - PayPal's
-     * approval redirect only means the buyer approved, not that money moved.
-     * Node's services/paypal.js never called this at all; the invoice was
-     * marked "paid" purely because the frontend trusted the return URL's
-     * payment_success param, which is both why it silently never really
-     * confirmed payment and why anyone could forge that URL to mark any
-     * invoice paid without ever paying. This call is the real verification.
-     */
+   
     public boolean capturePayment(String orderId) {
         String accessToken = fetchAccessToken();
 

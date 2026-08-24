@@ -2,7 +2,6 @@ package com.medixoffice.backend.exception;
 
 import org.springframework.http.HttpStatus;
 
-/** Carries the extra fields the frontend actually reads (remainingAttempts, maxAttemptsReached) - status varies per case (400 vs 429). */
 public class VerifyCodeFailedException extends RuntimeException {
 
     private final HttpStatus status;
