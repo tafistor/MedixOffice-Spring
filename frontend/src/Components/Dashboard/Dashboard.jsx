@@ -138,7 +138,8 @@ function Dashboard() {
 
   const handleNotificationClick = async (notification) => {
     try {
-      // Naviguer vers la page des rendez-vous sans marquer comme lu
+      await notifications.markAsRead(notification.id);
+      setUnreadNotifications(prev => prev.filter(n => n.id !== notification.id));
       navigate('/appointments');
       setShowNotificationDropdown(false);
     } catch (error) {
