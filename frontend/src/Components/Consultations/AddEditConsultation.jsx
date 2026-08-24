@@ -11,8 +11,8 @@ function AddEditConsultation({ isOpen, onClose, onSubmit, consultation = null })
       doctorId: '',
       date: new Date().toISOString().split('T')[0],
       time: '09:00',
-      type: 'Regular Check-up',
-      status: 'Scheduled',
+      type: 'REGULAR_CHECKUP',
+      status: 'SCHEDULED',
       notes: '',
       vitals: {
         bloodPressure: null,
@@ -203,8 +203,8 @@ function AddEditConsultation({ isOpen, onClose, onSubmit, consultation = null })
           doctorId: '',
           date: new Date().toISOString().split('T')[0],
           time: '09:00',
-          type: 'Regular Check-up',
-          status: 'Scheduled',
+          type: 'REGULAR_CHECKUP',
+          status: 'SCHEDULED',
           notes: '',
           vitals: {
             bloodPressure: '',
@@ -397,10 +397,10 @@ function AddEditConsultation({ isOpen, onClose, onSubmit, consultation = null })
                 onChange={handleInputChange}
                 required
               >
-                <option value="Regular Check-up">Regular Check-up</option>
-                <option value="Follow-up">Follow-up</option>
-                <option value="Specialist Consultation">Specialist Consultation</option>
-                <option value="Emergency">Emergency</option>
+                <option value="REGULAR_CHECKUP">Regular Check-up</option>
+                <option value="FOLLOW_UP">Follow-up</option>
+                <option value="SPECIALIST_CONSULTATION">Specialist Consultation</option>
+                <option value="EMERGENCY">Emergency</option>
               </select>
             </div>
             <div className="form-group">
@@ -412,10 +412,10 @@ function AddEditConsultation({ isOpen, onClose, onSubmit, consultation = null })
                 onChange={handleInputChange}
                 required
               >
-                <option value="Scheduled">Scheduled</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
+                <option value="SCHEDULED">Scheduled</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
               </select>
             </div>
           </div>
