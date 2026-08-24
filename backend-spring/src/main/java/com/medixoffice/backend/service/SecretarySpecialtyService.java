@@ -37,7 +37,14 @@ public class SecretarySpecialtyService {
                 .filter(u -> u.getRole() == Role.secretary)
                 .orElseThrow(() -> new ResourceNotFoundException("Secrétaire non trouvé"));
 
+        // flush() forces the deletes to actually hit the DB now. Without it, Hibernate
+        // queues them as pending actions and its ActionQueue always runs inserts before
+        // deletes at the next flush regardless of call order - so re-saving a specialty
+        // that's already there (the common case: keeping existing ones, adding one more)
+        // would insert the "new" row before the old one is gone, hitting the unique
+        // constraint on (userId, specialty) even though nothing was really duplicated.
         secretarySpecialtyRepository.deleteByUserId(request.userId());
+        secretarySpecialtyRepository.flush();
 
         if (request.specialties() != null) {
             for (String specialty : request.specialties()) {
