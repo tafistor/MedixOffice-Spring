@@ -2,6 +2,8 @@ package com.medixoffice.backend.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.medixoffice.backend.exception.PaymentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import java.util.Map;
 @Service
 public class PayPalService {
 
+    private static final Logger log = LoggerFactory.getLogger(PayPalService.class);
+
     private final String clientId;
     private final String clientSecret;
     private final String baseUrl;
@@ -33,6 +37,8 @@ public class PayPalService {
         this.baseUrl = baseUrl;
         this.appUrl = appUrl;
         this.restClient = RestClient.create();
+        log.info("PayPal client configured: baseUrl={}, clientId len={} hash={}, clientSecret len={} hash={}",
+                baseUrl, clientId.length(), clientId.hashCode(), clientSecret.length(), clientSecret.hashCode());
     }
 
     public String createPayment(BigDecimal amount, Integer invoiceId) {
