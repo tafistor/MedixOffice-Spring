@@ -7,7 +7,7 @@ const initialFormState = {
   patientId: '',
   doctorId: '',
   consultationId: '',
-  recordType: 'Consultation',
+  recordType: 'CONSULTATION',
   diagnosis: '',
   treatment: '',
   prescription: '',
@@ -43,7 +43,7 @@ function AddEditMedicalRecord({ isOpen, onClose, onSubmit, record = null, curren
           patientId: record.patientId || '',
           doctorId: record.doctorId || currentDoctor?.id || '',
           consultationId: record.consultationId || '',
-          recordType: record.recordType || 'Consultation',
+          recordType: record.recordType || 'CONSULTATION',
           diagnosis: record.diagnosis || '',
           treatment: record.treatment || '',
           prescription: record.prescription || '',
@@ -307,12 +307,12 @@ function AddEditMedicalRecord({ isOpen, onClose, onSubmit, record = null, curren
                 onChange={handleInputChange}
                 required
               >
-                <option value="Consultation">Consultation</option>
-                <option value="Lab Result">Lab Result</option>
-                <option value="Prescription">Prescription</option>
-                <option value="Surgery">Surgery</option>
-                <option value="Vaccination">Vaccination</option>
-                <option value="Other">Other</option>
+                <option value="CONSULTATION">Consultation</option>
+                <option value="LAB_RESULT">Lab Result</option>
+                <option value="PRESCRIPTION">Prescription</option>
+                <option value="SURGERY">Surgery</option>
+                <option value="VACCINATION">Vaccination</option>
+                <option value="OTHER">Other</option>
               </select>
             </div>
           </div>
