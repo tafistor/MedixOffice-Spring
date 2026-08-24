@@ -198,6 +198,11 @@ public class AppointmentService {
             throw new SlotUnavailableException("Heure de rendez-vous invalide");
         }
 
+        LocalDate today = LocalDate.now();
+        if (date.isBefore(today) || (date.isEqual(today) && parsedTime.isBefore(LocalTime.now()))) {
+            throw new SlotUnavailableException("Impossible de réserver un rendez-vous à une date ou une heure déjà passée");
+        }
+
         if (!workScheduleRepository.hasAvailableSlot(doctorId, dayOfWeek, parsedTime)) {
             throw new SlotUnavailableException("Le médecin n'est pas disponible à ce créneau horaire");
         }

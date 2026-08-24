@@ -289,6 +289,16 @@ function AddEditAppointment({ appointment, onClose }) {
         return slots;
       };
 
+      const isPastSlot = (slotDate, slot) => {
+        const todayStr = new Date().toISOString().split('T')[0];
+        if (slotDate !== todayStr) return false;
+        const startTime = slot.split(' to ')[0];
+        const [hours, minutes] = startTime.split(':').map(Number);
+        const slotDateTime = new Date();
+        slotDateTime.setHours(hours, minutes, 0, 0);
+        return slotDateTime < new Date();
+      };
+
       useEffect(() => {
         const fetchScheduleAndBookings = async () => {
           if (!selectedDoctor || !date) {
@@ -350,7 +360,7 @@ function AddEditAppointment({ appointment, onClose }) {
               return timeA.localeCompare(timeB);
             });
     
-            const available = uniqueSlots.filter(slot => !booked.includes(slot));
+            const available = uniqueSlots.filter(slot => !booked.includes(slot) && !isPastSlot(date, slot));
             setAvailableTimeSlots(available);
     
             if (time && !available.includes(time)) {
