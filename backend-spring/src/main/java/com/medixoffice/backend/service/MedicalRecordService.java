@@ -74,7 +74,7 @@ public class MedicalRecordService {
         MedicalRecord record = new MedicalRecord(patient, doctor, consultation, doctor, request.recordType());
         record.setDiagnosis(request.diagnosis());
         record.setTreatment(request.treatment());
-        record.setPrescription(request.prescription());
+        record.setPrescription(toJson(request.prescription()));
         record.setLabResults(toJson(fileStorageService.store(patient.getId(), request.labResults())));
         record.setAttachments(toJson(fileStorageService.store(patient.getId(), request.attachments())));
         if (request.status() != null) record.setStatus(request.status());
@@ -100,7 +100,7 @@ public class MedicalRecordService {
         if (request.recordType() != null) record.setRecordType(request.recordType());
         if (request.diagnosis() != null) record.setDiagnosis(request.diagnosis());
         if (request.treatment() != null) record.setTreatment(request.treatment());
-        if (request.prescription() != null) record.setPrescription(request.prescription());
+        if (request.prescription() != null) record.setPrescription(toJson(request.prescription()));
         if (request.status() != null) record.setStatus(request.status());
         if (request.isConfidential() != null) record.setConfidential(request.isConfidential());
         if (request.doctorId() != null) {
