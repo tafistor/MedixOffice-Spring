@@ -21,8 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -56,7 +58,10 @@ class AppointmentServiceTest {
     private User requestingUser;
     private Doctor doctor;
     private Patient patient;
-    private final LocalDate date = LocalDate.of(2026, 8, 26); // a Wednesday
+    // Always a future Wednesday, however far this test suite's next run is from
+    // when this was written - a fixed past date silently started failing the
+    // service's own "no booking in the past" check instead of testing anything.
+    private final LocalDate date = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY));
 
     @BeforeEach
     void setUp() {
