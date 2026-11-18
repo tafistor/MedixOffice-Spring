@@ -5,6 +5,7 @@ import com.medixoffice.backend.dto.invoice.InvoiceUpdateRequest;
 import com.medixoffice.backend.dto.payment.CapturePaypalPaymentRequest;
 import com.medixoffice.backend.dto.payment.CreatePaymentRequest;
 import com.medixoffice.backend.dto.payment.PaymentUrlResponse;
+import com.medixoffice.backend.dto.payment.VerifyStripePaymentRequest;
 import com.medixoffice.backend.entity.InvoiceStatus;
 import com.medixoffice.backend.exception.PaymentException;
 import com.medixoffice.backend.service.InvoiceService;
@@ -37,6 +38,22 @@ public class PaymentController {
     public PaymentUrlResponse createStripePayment(@Valid @RequestBody CreatePaymentRequest request) {
         String url = stripeService.createCheckoutSession(request.amount(), request.invoiceId());
         return new PaymentUrlResponse(url);
+    }
+
+    /**
+     * Same treatment as the PayPal capture endpoint: actually confirm the
+     * payment with Stripe before marking the invoice paid, instead of trusting
+     * the return_url's payment_success param.
+     */
+    @PostMapping("/stripe/verify")
+    public MessageResponse verifyStripePayment(@Valid @RequestBody VerifyStripePaymentRequest request) {
+        boolean paid = stripeService.verifyPayment(request.sessionId());
+        if (!paid) {
+            throw new PaymentException("Stripe payment was not completed", null);
+        }
+        invoiceService.updateInvoice(request.invoiceId(),
+                new InvoiceUpdateRequest(null, null, null, null, null, InvoiceStatus.Paid));
+        return new MessageResponse("Payment verified successfully");
     }
 
     @PostMapping("/paypal")

@@ -30,7 +30,10 @@ public class StripeService {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(appUrl + "/billing?payment_success=true&invoice_id=" + invoiceId)
+                // {CHECKOUT_SESSION_ID} is a Stripe template var, substituted with the
+                // real session id on redirect - lets the return handler verify the
+                // actual payment server-side instead of trusting payment_success=true.
+                .setSuccessUrl(appUrl + "/billing?payment_success=true&invoice_id=" + invoiceId + "&session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl(appUrl + "/billing?payment_success=false&invoice_id=" + invoiceId)
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
@@ -49,6 +52,17 @@ public class StripeService {
             return session.getUrl();
         } catch (StripeException e) {
             throw new PaymentException("Stripe API error", e);
+        }
+    }
+
+  
+    public boolean verifyPayment(String sessionId) {
+        Stripe.apiKey = secretKey;
+        try {
+            Session session = Session.retrieve(sessionId);
+            return "paid".equals(session.getPaymentStatus());
+        } catch (StripeException e) {
+            throw new PaymentException("Stripe verification failed", e);
         }
     }
 }

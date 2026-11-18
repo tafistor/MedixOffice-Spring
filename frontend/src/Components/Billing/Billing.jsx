@@ -36,16 +36,18 @@ function Billing() {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentSuccess = urlParams.get('payment_success');
     const invoiceId = urlParams.get('invoice_id');
-    // PayPal appends its own order id as `token` when redirecting back to
-    // return_url; Stripe's success_url has no such param. Use it to tell the
-    // two return flows apart, since only PayPal needs a server-side capture.
+    // PayPal appends its own order id as `token`; Stripe's success_url carries
+    // the real session id via {CHECKOUT_SESSION_ID}. Both are only ever
+    // trustworthy once confirmed server-side - payment_success=true alone is
+    // just a client-controllable URL param, never sufficient on its own.
     const paypalOrderId = urlParams.get('token');
+    const stripeSessionId = urlParams.get('session_id');
 
     if (paymentSuccess === 'true' && invoiceId && paypalOrderId) {
       capturePaypalPayment(paypalOrderId, invoiceId);
       window.history.replaceState({}, document.title, '/billing');
-    } else if (paymentSuccess === 'true' && invoiceId) {
-      updateInvoiceStatus(invoiceId, 'paid');
+    } else if (paymentSuccess === 'true' && invoiceId && stripeSessionId) {
+      verifyStripePayment(stripeSessionId, invoiceId);
       window.history.replaceState({}, document.title, '/billing');
     }
   };
@@ -64,26 +66,28 @@ function Billing() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/login';
+      } else {
+        setPaymentError(error.response?.data?.message || t('billing.paymentError'));
       }
     }
   };
 
-  const updateInvoiceStatus = async (invoiceId, status) => {
+  const verifyStripePayment = async (sessionId, invoiceId) => {
     try {
-      // Vérifier que l'utilisateur est connecté
       const token = localStorage.getItem('token');
       if (!token) {
         return;
       }
-      
-      const response = await invoices.update(invoiceId, { status });
+
+      await payments.verifyStripe(sessionId, invoiceId);
       await loadInvoices();
-    } catch (error) {      
+    } catch (error) {
       if (error.response?.status === 403) {
-        // Rediriger vers la page de connexion
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/login';
+      } else {
+        setPaymentError(error.response?.data?.message || t('billing.paymentError'));
       }
     }
   };

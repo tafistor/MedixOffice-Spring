@@ -124,6 +124,7 @@ export const payments = {
   payWithPaypal: (amount, invoiceId) => api.post('/payments/paypal', { amount, invoiceId }),
   payWithStripe: (amount, invoiceId) => api.post('/payments/stripe', { amount, invoiceId }),
   capturePaypal: (orderId, invoiceId) => api.post('/payments/paypal/capture', { orderId, invoiceId }),
+  verifyStripe: (sessionId, invoiceId) => api.post('/payments/stripe/verify', { sessionId, invoiceId }),
 };
 
 export const passwordReset = {
