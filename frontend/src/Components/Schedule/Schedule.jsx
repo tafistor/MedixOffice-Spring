@@ -23,7 +23,18 @@ function Schedule() {
         const diff = d.getDate() - day + (day === 0 ? -6 : 1);
         return new Date(d.setDate(diff));
     }
-    
+
+    // toISOString() converts through UTC first, so for any local time between
+    // midnight and the UTC offset (e.g. 00:00-01:00 in Brussels in winter) it
+    // silently rolls the calendar date back a day - this built wrong dates into
+    // real schedule rows. Format from local getters instead, never through UTC.
+    function toLocalDateString(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     function formatDateRange(date) {
         const start = new Date(date);
         const end = new Date(date);
@@ -59,10 +70,10 @@ function Schedule() {
     }
     
     if (user?.role === 'admin' || (user?.role === 'secretary' && specialties)) {
-      const startDate = selectedWeek.toISOString().split('T')[0];
+      const startDate = toLocalDateString(selectedWeek);
       const endDate = new Date(selectedWeek);
       endDate.setDate(endDate.getDate() + 4);
-      const endDateStr = endDate.toISOString().split('T')[0];
+      const endDateStr = toLocalDateString(endDate);
 
       let allSchedules = [];
 
@@ -92,10 +103,10 @@ function Schedule() {
 
       setSchedules(allSchedules);
     } else if (user?.role === 'doctor') {
-      const startDate = selectedWeek.toISOString().split('T')[0];
+      const startDate = toLocalDateString(selectedWeek);
       const endDate = new Date(selectedWeek);
       endDate.setDate(endDate.getDate() + 4);
-      const endDateStr = endDate.toISOString().split('T')[0];
+      const endDateStr = toLocalDateString(endDate);
 
       const response = await workSchedules.getDoctorSchedule(doctorId, startDate, endDateStr);
       if (response.data) {
@@ -219,7 +230,7 @@ function Schedule() {
                 {days.map((day, index) => {
                   const date = new Date(selectedWeek);
                   date.setDate(date.getDate() + index);
-                  const dateStr = date.toISOString().split('T')[0];
+                  const dateStr = toLocalDateString(date);
                   const daySchedules = item.schedules?.filter(s => s.date === dateStr) || [];
                   
                   // Trier par slotOrder

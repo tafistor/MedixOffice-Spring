@@ -38,11 +38,22 @@ function ManageSchedule({ isOpen, onClose, onSubmit, doctor = null, currentUser,
     return new Date(d.setDate(diff));
   }
 
+  // toISOString() converts through UTC first, so for any local time between
+  // midnight and the UTC offset (e.g. 00:00-01:00 in Brussels in winter) it
+  // silently rolls the calendar date back a day - this built wrong dates into
+  // real schedule rows. Format from local getters instead, never through UTC.
+  function toLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   function getDateForDay(day, weekStart) {
     const dayIndex = daysOfWeek.indexOf(day);
     const date = new Date(weekStart);
     date.setDate(date.getDate() + dayIndex);
-    return date.toISOString().split('T')[0];
+    return toLocalDateString(date);
   }
   
   function formatDateRange(date) {
@@ -369,7 +380,7 @@ function ManageSchedule({ isOpen, onClose, onSubmit, doctor = null, currentUser,
       setIsSubmitting(true);
       const response = await workSchedules.copyPreviousWeek({
         doctorId,
-        currentWeekStart: selectedWeek.toISOString().split('T')[0]
+        currentWeekStart: toLocalDateString(selectedWeek)
       });
 
       if (response.data && response.data.schedules) {
