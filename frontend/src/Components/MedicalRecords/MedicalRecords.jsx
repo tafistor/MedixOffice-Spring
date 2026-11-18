@@ -26,6 +26,9 @@ function MedicalRecords() {
         fetchDoctorInfo();
       } else if (user.role === 'patient') {
         fetchPatientInfo();
+      } else {
+        // admin/secretary: no per-doctor or per-patient filtering, just load everything
+        fetchRecords();
       }
     }
   }, [user]);
