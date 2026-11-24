@@ -3,6 +3,7 @@ package com.medixoffice.backend.service;
 import com.medixoffice.backend.dto.auth.AuthResponse;
 import com.medixoffice.backend.dto.auth.LoginRequest;
 import com.medixoffice.backend.dto.auth.RegisterRequest;
+import com.medixoffice.backend.entity.Role;
 import com.medixoffice.backend.entity.User;
 import com.medixoffice.backend.exception.AccountDeactivatedException;
 import com.medixoffice.backend.exception.AccountLockedException;
@@ -39,8 +40,10 @@ public class AuthService {
             throw new DuplicateEmailException("Email already in use");
         }
 
+        // Public self-registration only ever creates patients; staff accounts
+        // (admin, secretary, doctor) are provisioned by an admin, not self-selected here.
         User user = new User(request.firstName(), request.lastName(), request.email(),
-                passwordEncoder.encode(request.password()), request.role());
+                passwordEncoder.encode(request.password()), Role.patient);
         user = userRepository.save(user);
 
         return toAuthResponse(user);

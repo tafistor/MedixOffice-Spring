@@ -12,7 +12,6 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('patient');
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [touched, setTouched] = useState({});
@@ -101,12 +100,11 @@ function Signup() {
         lastName,
         email,
         password,
-        role,
       });
-      
+
       const { user, token } = response.data;
       login(user, token);
-      navigate(role === 'patient' || role === 'doctor' ? '/complete-profile' : '/dashboard');
+      navigate('/complete-profile');
     } catch (error) {
       if (error.response && error.response.status === 400 && error.response.data.message === 'Email already in use') {
         setEmailError('This email already exists');
@@ -219,13 +217,6 @@ function Signup() {
               <p className="error-text">Passwords do not match</p>
             )}
           </div>
-
-          <select value={role} onChange={(e) => setRole(e.target.value)} className="input-field" required>
-            <option value="admin">Admin</option>
-            <option value="doctor">Doctor</option>
-            <option value="secretary">Secretary</option>
-            <option value="patient">Patient</option>
-          </select>
 
           <button type="submit" className="submit-button" disabled={!isFormValid()}>
             Sign Up
