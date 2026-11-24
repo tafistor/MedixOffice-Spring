@@ -415,8 +415,8 @@ function AddEditAppointment({ appointment, onClose }) {
           time,
           visitDescription: visitType === 'Other' ? customVisitType : visitType,
           amount: parseFloat(amount),
-          // Envoyer le statut seulement si c'est un secrétaire
-          ...(user.role === 'secretary' && { status })
+          // Envoyer le statut seulement si c'est un secrétaire ou un admin
+          ...((user.role === 'secretary' || user.role === 'admin') && { status })
         };
     
         try {
@@ -621,7 +621,7 @@ function AddEditAppointment({ appointment, onClose }) {
                   </div>
                 </div>
 
-                {user.role === 'secretary' && (
+                {(user.role === 'secretary' || user.role === 'admin') && (
                   <div className="form-group">
                     <label className="form-label">{t('appointmentForm.statusLabel')}</label>
                     <select

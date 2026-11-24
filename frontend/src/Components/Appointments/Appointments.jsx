@@ -197,7 +197,7 @@ function Appointments() {
                     </td>
                     <td>
                       <div className="action-buttons">
-                        {(user.role === 'secretary' || user.role === 'doctor') && (
+                        {(user.role === 'admin' || user.role === 'secretary' || user.role === 'doctor') && (
                           <button
                             onClick={() => handleEdit(appointment)}
                             className="btn-edit"
