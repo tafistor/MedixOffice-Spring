@@ -20,6 +20,7 @@ function SecretaryManagement() {
   const [newSecretary, setNewSecretary] = useState(initialNewSecretary);
   const [addError, setAddError] = useState(null);
   const [adding, setAdding] = useState(false);
+  const [createdCredentials, setCreatedCredentials] = useState(null);
 
   useEffect(() => {
     loadSecretaries();
@@ -90,9 +91,12 @@ function SecretaryManagement() {
     try {
       setAdding(true);
       setAddError(null);
-      await secretarySpecialties.create(newSecretary);
+      const response = await secretarySpecialties.create(newSecretary);
       await loadSecretaries();
-      setIsAddDialogOpen(false);
+      setCreatedCredentials({
+        email: response.data.secretary.email,
+        temporaryPassword: response.data.temporaryPassword
+      });
       setNewSecretary(initialNewSecretary);
     } catch (error) {
       setAddError(error.response?.data?.message || 'Error creating secretary. Please try again.');
@@ -105,6 +109,7 @@ function SecretaryManagement() {
     setIsAddDialogOpen(false);
     setNewSecretary(initialNewSecretary);
     setAddError(null);
+    setCreatedCredentials(null);
   };
 
   if (loading) {
@@ -278,7 +283,54 @@ function SecretaryManagement() {
         </div>
       )}
 
-      {isAddDialogOpen && (
+      {isAddDialogOpen && createdCredentials && (
+        <div className="dialog-overlay">
+          <div className="dialog-content">
+            <div className="dialog-header">
+              <h2>Secretary Created</h2>
+              <button className="close-btn" onClick={handleCloseAddDialog}>
+                <X />
+              </button>
+            </div>
+
+            <div className="dialog-body">
+              <p className="dialog-description">
+                Email sending isn't wired up yet, so this won't be sent automatically — copy it now and share it with
+                {' '}{newSecretary.firstName || 'the secretary'} yourself. It won't be shown again.
+              </p>
+
+              <div className="secretary-form-group">
+                <label className="secretary-form-label">Email</label>
+                <input
+                  type="text"
+                  className="secretary-form-input"
+                  value={createdCredentials.email}
+                  readOnly
+                  onFocus={(e) => e.target.select()}
+                />
+              </div>
+              <div className="secretary-form-group">
+                <label className="secretary-form-label">Temporary Password</label>
+                <input
+                  type="text"
+                  className="secretary-form-input"
+                  value={createdCredentials.temporaryPassword}
+                  readOnly
+                  onFocus={(e) => e.target.select()}
+                />
+              </div>
+            </div>
+
+            <div className="dialog-actions">
+              <button className="save-btn" onClick={handleCloseAddDialog}>
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAddDialogOpen && !createdCredentials && (
         <div className="dialog-overlay">
           <form className="dialog-content" onSubmit={handleAddSecretary}>
             <div className="dialog-header">
@@ -302,7 +354,7 @@ function SecretaryManagement() {
 
             <div className="dialog-body">
               <p className="dialog-description">
-                A temporary password will be generated and emailed to this address. You can assign specialties afterwards.
+                A temporary password will be generated. You'll be shown it once after creation — you can assign specialties afterwards.
               </p>
 
               <div className="secretary-form-group">
