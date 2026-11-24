@@ -114,6 +114,7 @@ export const secretarySpecialties = {
   updateSpecialties: (data) => api.post('/secretary-specialties/update', data),
   getUserSpecialties: (userId) => api.get(`/secretary-specialties/user/${userId}`),
   getCurrentUserSpecialties: () => api.get('/secretary-specialties/current-user'),
+  create: (secretaryData) => api.post('/secretary-specialties/create', secretaryData),
 };
 export const notifications = {
   getUnreadNotifications: (userId) => api.get(`/notifications/user/${userId}/unread`),

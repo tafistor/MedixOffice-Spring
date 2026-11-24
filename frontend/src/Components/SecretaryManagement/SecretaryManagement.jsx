@@ -5,6 +5,8 @@ import { secretarySpecialties } from '../../services/api';
 import { specialisations } from '../../data/specializationsList';
 import './SecretaryManagement.css';
 
+const initialNewSecretary = { firstName: '', lastName: '', email: '' };
+
 function SecretaryManagement() {
   const navigate = useNavigate();
   const [secretaries, setSecretaries] = useState([]);
@@ -14,6 +16,10 @@ function SecretaryManagement() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newSecretary, setNewSecretary] = useState(initialNewSecretary);
+  const [addError, setAddError] = useState(null);
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     loadSecretaries();
@@ -79,6 +85,28 @@ function SecretaryManagement() {
     setError(null);
   };
 
+  const handleAddSecretary = async (e) => {
+    e.preventDefault();
+    try {
+      setAdding(true);
+      setAddError(null);
+      await secretarySpecialties.create(newSecretary);
+      await loadSecretaries();
+      setIsAddDialogOpen(false);
+      setNewSecretary(initialNewSecretary);
+    } catch (error) {
+      setAddError(error.response?.data?.message || 'Error creating secretary. Please try again.');
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const handleCloseAddDialog = () => {
+    setIsAddDialogOpen(false);
+    setNewSecretary(initialNewSecretary);
+    setAddError(null);
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -119,6 +147,10 @@ function SecretaryManagement() {
             <p>Manage specialties assigned to secretaries</p>
           </div>
         </div>
+        <button className="edit-specialties-btn" onClick={() => setIsAddDialogOpen(true)}>
+          <Plus className="btn-icon" />
+          Add Secretary
+        </button>
       </div>
 
       <div className="secretaries-grid">
@@ -243,6 +275,95 @@ function SecretaryManagement() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {isAddDialogOpen && (
+        <div className="dialog-overlay">
+          <form className="dialog-content" onSubmit={handleAddSecretary}>
+            <div className="dialog-header">
+              <h2>Add Secretary</h2>
+              <button
+                type="button"
+                className="close-btn"
+                onClick={handleCloseAddDialog}
+                disabled={adding}
+              >
+                <X />
+              </button>
+            </div>
+
+            {addError && (
+              <div className="dialog-error">
+                <AlertCircle className="error-icon-small" />
+                <span>{addError}</span>
+              </div>
+            )}
+
+            <div className="dialog-body">
+              <p className="dialog-description">
+                A temporary password will be generated and emailed to this address. You can assign specialties afterwards.
+              </p>
+
+              <div className="secretary-form-group">
+                <label className="secretary-form-label">First Name</label>
+                <input
+                  type="text"
+                  className="secretary-form-input"
+                  value={newSecretary.firstName}
+                  onChange={(e) => setNewSecretary(prev => ({ ...prev, firstName: e.target.value }))}
+                  required
+                  disabled={adding}
+                />
+              </div>
+              <div className="secretary-form-group">
+                <label className="secretary-form-label">Last Name</label>
+                <input
+                  type="text"
+                  className="secretary-form-input"
+                  value={newSecretary.lastName}
+                  onChange={(e) => setNewSecretary(prev => ({ ...prev, lastName: e.target.value }))}
+                  required
+                  disabled={adding}
+                />
+              </div>
+              <div className="secretary-form-group">
+                <label className="secretary-form-label">Email</label>
+                <input
+                  type="email"
+                  className="secretary-form-input"
+                  value={newSecretary.email}
+                  onChange={(e) => setNewSecretary(prev => ({ ...prev, email: e.target.value }))}
+                  required
+                  disabled={adding}
+                />
+              </div>
+            </div>
+
+            <div className="dialog-actions">
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={handleCloseAddDialog}
+                disabled={adding}
+              >
+                Cancel
+              </button>
+              <button className="save-btn" disabled={adding}>
+                {adding ? (
+                  <>
+                    <Loader className="btn-icon spinning" />
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="btn-icon" />
+                    Create Secretary
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
